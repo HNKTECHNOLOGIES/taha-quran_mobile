@@ -53,17 +53,12 @@ GoRouter createAppRouter() {
             routes: [
               GoRoute(
                 path: '/favorites',
-                builder: (context, state) => const FavoritesScreen(),
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                path: '/search',
-                builder: (context, state) => PlaceholderScreen(
-                  titleBuilder: (s) => s.search,
-                ),
+                builder: (context, state) {
+                  final tab = state.uri.queryParameters['tab'];
+                  return FavoritesScreen(
+                    initialTabIndex: tab == 'bookmarks' ? 1 : 0,
+                  );
+                },
               ),
             ],
           ),

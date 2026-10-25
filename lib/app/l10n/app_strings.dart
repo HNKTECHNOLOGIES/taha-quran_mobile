@@ -39,6 +39,12 @@ class AppStrings {
       ? 'تصفح السور'
       : 'Parcourir les sourates';
 
+  String get readQuran =>
+      language == AppLanguage.arabic ? 'اقرأ القرآن' : 'Lire le Coran';
+
+  String get myFavorites =>
+      language == AppLanguage.arabic ? 'مفضلتي' : 'Mes favoris';
+
   String get continueReading => language == AppLanguage.arabic
       ? 'متابعة القراءة'
       : 'Continuer ma lecture';

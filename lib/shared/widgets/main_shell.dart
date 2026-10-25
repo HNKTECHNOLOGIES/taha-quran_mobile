@@ -20,6 +20,8 @@ class MainShell extends ConsumerWidget {
       bottomNavigationBar: NavigationBar(
         selectedIndex: navigationShell.currentIndex,
         onDestinationSelected: navigationShell.goBranch,
+        backgroundColor: Colors.white,
+        indicatorColor: AppColors.emerald.withValues(alpha: 0.14),
         destinations: [
           NavigationDestination(
             icon: const Icon(Icons.home_outlined),
@@ -35,11 +37,6 @@ class MainShell extends ConsumerWidget {
             icon: const Icon(Icons.favorite_border),
             selectedIcon: const Icon(Icons.favorite, color: AppColors.emerald),
             label: s.favorites,
-          ),
-          NavigationDestination(
-            icon: const Icon(Icons.search),
-            selectedIcon: const Icon(Icons.search, color: AppColors.emerald),
-            label: s.search,
           ),
           NavigationDestination(
             icon: const Icon(Icons.settings_outlined),

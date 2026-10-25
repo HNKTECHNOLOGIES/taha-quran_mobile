@@ -9,7 +9,9 @@ import '../../../../shared/widgets/loading_view.dart';
 import '../providers/library_providers.dart';
 
 class FavoritesScreen extends ConsumerWidget {
-  const FavoritesScreen({super.key});
+  const FavoritesScreen({super.key, this.initialTabIndex = 0});
+
+  final int initialTabIndex;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -17,6 +19,7 @@ class FavoritesScreen extends ConsumerWidget {
 
     return DefaultTabController(
       length: 2,
+      initialIndex: initialTabIndex.clamp(0, 1),
       child: Scaffold(
         backgroundColor: AppColors.mushafCream,
         appBar: AppBar(

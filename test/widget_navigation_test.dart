@@ -61,7 +61,7 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Parcourir les sourates'));
+    await tester.tap(find.text('Lire le Coran'));
     await tester.pumpAndSettle();
 
     await tester.tap(find.text('الفاتحة'));
