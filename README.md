@@ -4,6 +4,8 @@
 
 Nom technique du projet : `quran_mobile` (inchangé).
 
+Logo / icône : `assets/branding/taha_logo.png` (généré pour Android, iOS et Web via `flutter_launcher_icons`).
+
 ## Fonctionnalités (livrées)
 
 - **UC01** — Liste des 114 sourates (nom arabe, translittération, nombre de versets)

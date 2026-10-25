@@ -84,13 +84,45 @@ class HomeScreen extends ConsumerWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 28),
+                  const SizedBox(height: 20),
+                  Center(
+                    child: Container(
+                      width: width < 360 ? 148 : 168,
+                      height: width < 360 ? 148 : 168,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(36),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.28),
+                            blurRadius: 28,
+                            offset: const Offset(0, 12),
+                          ),
+                          BoxShadow(
+                            color: AppColors.gold.withValues(alpha: 0.28),
+                            blurRadius: 18,
+                            spreadRadius: 1,
+                          ),
+                        ],
+                        border: Border.all(
+                          color: AppColors.goldSoft.withValues(alpha: 0.7),
+                          width: 1.5,
+                        ),
+                      ),
+                      clipBehavior: Clip.antiAlias,
+                      child: Image.asset(
+                        'assets/branding/taha_logo.png',
+                        fit: BoxFit.cover,
+                        semanticLabel: s.appBrand,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 18),
                   Text(
                     s.appBrand,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontFamily: 'SourceSerif4',
-                      fontSize: width < 360 ? 34 : 42,
+                      fontSize: width < 360 ? 28 : 34,
                       fontWeight: FontWeight.w700,
                       height: 1.25,
                       color: Colors.white,
@@ -104,14 +136,14 @@ class HomeScreen extends ConsumerWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 8),
                   Text(
                     'السلام عليكم',
                     textAlign: TextAlign.center,
                     textDirection: TextDirection.rtl,
                     style: TextStyle(
                       fontFamily: 'AmiriQuran',
-                      fontSize: width < 360 ? 26 : 30,
+                      fontSize: width < 360 ? 24 : 28,
                       height: 1.35,
                       color: Colors.white.withValues(alpha: 0.92),
                     ),
