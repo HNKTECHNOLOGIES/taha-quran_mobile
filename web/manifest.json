@@ -1,11 +1,11 @@
 {
-    "name": "quran_mobile",
-    "short_name": "quran_mobile",
+    "name": "TAHA — طه",
+    "short_name": "TAHA",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "Application mobile pour lire le Saint Coran hors connexion",
+    "background_color": "#FFF6E8",
+    "theme_color": "#0B6E4F",
+    "description": "TAHA — طه : lire le Saint Coran hors connexion",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
