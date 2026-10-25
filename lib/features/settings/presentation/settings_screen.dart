@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../app/providers/locale_provider.dart';
 import '../../../app/providers/reading_settings_provider.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../audio/data/reciter_catalog.dart';
+import '../../audio/presentation/providers/audio_providers.dart';
 import '../../translations/presentation/providers/translation_providers.dart';
 
 class SettingsScreen extends ConsumerWidget {
@@ -14,6 +16,7 @@ class SettingsScreen extends ConsumerWidget {
     final s = ref.watch(localeProvider);
     final settings = ref.watch(readingSettingsProvider);
     final info = ref.watch(frenchTranslationInfoProvider).asData?.value;
+    final reciter = ref.watch(selectedReciterProvider);
 
     return Scaffold(
       backgroundColor: AppColors.mushafCream,
@@ -25,6 +28,51 @@ class SettingsScreen extends ConsumerWidget {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
         children: [
+          _SectionTitle(s.reciterSection),
+          for (final r in ReciterCatalog.all)
+            ListTile(
+              title: Text(r.nameEn),
+              subtitle: Text(
+                '${r.nameAr} · ${r.bitrateLabel}',
+                textDirection: TextDirection.rtl,
+              ),
+              trailing: Icon(
+                r.id == reciter.id
+                    ? Icons.check_circle
+                    : Icons.circle_outlined,
+                color: r.id == reciter.id
+                    ? AppColors.emerald
+                    : AppColors.creamDark,
+              ),
+              onTap: () => ref
+                  .read(audioControllerProvider.notifier)
+                  .changeReciter(r),
+            ),
+          const SizedBox(height: 8),
+          _SectionTitle(s.aboutAudio),
+          Card(
+            color: Colors.white,
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(14),
+              side: BorderSide(color: AppColors.creamDark),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Text(
+                '${ReciterCatalog.attribution}\n'
+                'Fichiers par verset (everyayah.com). '
+                'Streamés, non redistribués dans l’application.',
+                style: TextStyle(
+                  fontFamily: 'SourceSerif4',
+                  fontSize: 13,
+                  height: 1.4,
+                  color: AppColors.inkMuted,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
           _SectionTitle(s.translationSection),
           SwitchListTile(
             value: settings.showFrenchTranslation,

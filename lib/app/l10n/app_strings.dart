@@ -174,6 +174,43 @@ class AppStrings {
       ? 'لا توجد ترجمة محلية مثبتة'
       : 'Aucune traduction locale installée';
 
+  String get playAudio =>
+      language == AppLanguage.arabic ? 'تشغيل' : 'Lecture';
+
+  String get pauseAudio =>
+      language == AppLanguage.arabic ? 'إيقاف مؤقت' : 'Pause';
+
+  String get stopAudio =>
+      language == AppLanguage.arabic ? 'إيقاف' : 'Arrêt';
+
+  String get previousVerse =>
+      language == AppLanguage.arabic ? 'الآية السابقة' : 'Verset précédent';
+
+  String get nextVerse =>
+      language == AppLanguage.arabic ? 'الآية التالية' : 'Verset suivant';
+
+  String get chooseReciter => language == AppLanguage.arabic
+      ? 'اختر القارئ'
+      : 'Choisir un récitateur';
+
+  String get audioReady => language == AppLanguage.arabic
+      ? 'جاهز للتلاوة'
+      : 'Prêt à réciter';
+
+  String get audioError => language == AppLanguage.arabic
+      ? 'تعذر تحميل التلاوة (الشبكة؟)'
+      : 'Impossible de charger l’audio (réseau ?)';
+
+  String get reciterSection =>
+      language == AppLanguage.arabic ? 'القارئ' : 'Récitateur';
+
+  String get aboutAudio =>
+      language == AppLanguage.arabic ? 'حول التلاوة' : 'À propos de l’audio';
+
+  String get playFromVerse => language == AppLanguage.arabic
+      ? 'تلاوة من هذه الآية'
+      : 'Réciter depuis ce verset';
+
   String revelationLabel(String type) {
     final t = type.toLowerCase();
     if (t.contains('medin')) return medinan;

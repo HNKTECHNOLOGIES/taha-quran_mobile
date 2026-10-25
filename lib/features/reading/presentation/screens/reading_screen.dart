@@ -9,6 +9,9 @@ import '../../../../core/constants/quran_constants.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../shared/widgets/error_view.dart';
 import '../../../../shared/widgets/loading_view.dart';
+import '../../../audio/domain/entities/audio_playback_state.dart';
+import '../../../audio/presentation/providers/audio_providers.dart';
+import '../../../audio/presentation/widgets/compact_audio_player.dart';
 import '../../../library/domain/entities/verse_ref.dart';
 import '../../../library/presentation/providers/library_providers.dart';
 import '../../../surahs/domain/entities/surah.dart';
@@ -97,6 +100,7 @@ class _ReadingViewState extends ConsumerState<_ReadingView> {
   final ScrollController _scrollController = ScrollController();
   final Map<int, GlobalKey> _ayahKeys = {};
   bool _didScrollToInitial = false;
+  int? _lastScrolledAudioAyah;
 
   @override
   void dispose() {
@@ -112,20 +116,41 @@ class _ReadingViewState extends ConsumerState<_ReadingView> {
     context.pushReplacement('/surahs/$id');
   }
 
-  Future<void> _scrollToInitialAyah() async {
-    final target = widget.initialAyah;
-    if (target == null || _didScrollToInitial) return;
-    _didScrollToInitial = true;
-    await Future<void>.delayed(const Duration(milliseconds: 50));
+  Future<void> _scrollToAyah(int target, {bool animated = true}) async {
     if (!mounted) return;
     final ctx = _keyFor(target).currentContext;
     if (ctx == null || !ctx.mounted) return;
     await Scrollable.ensureVisible(
       ctx,
-      duration: const Duration(milliseconds: 350),
-      alignment: 0.1,
+      duration: animated
+          ? const Duration(milliseconds: 350)
+          : Duration.zero,
+      alignment: 0.15,
       curve: Curves.easeOut,
     );
+  }
+
+  Future<void> _scrollToInitialAyah() async {
+    final target = widget.initialAyah;
+    if (target == null || _didScrollToInitial) return;
+    _didScrollToInitial = true;
+    await Future<void>.delayed(const Duration(milliseconds: 50));
+    await _scrollToAyah(target);
+  }
+
+  void _maybeScrollToPlayingAyah(AudioPlaybackState audio) {
+    if (audio.surahId != widget.surah.id) return;
+    if (audio.status != AudioStatus.playing &&
+        audio.status != AudioStatus.paused &&
+        audio.status != AudioStatus.loading) {
+      return;
+    }
+    final ayah = audio.ayahNumber;
+    if (ayah == null || ayah == _lastScrolledAudioAyah) return;
+    _lastScrolledAudioAyah = ayah;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollToAyah(ayah);
+    });
   }
 
   @override
@@ -135,8 +160,13 @@ class _ReadingViewState extends ConsumerState<_ReadingView> {
     final hasPrev = surah.id > 1;
     final hasNext = surah.id < QuranConstants.surahCount;
     final actions = ref.read(libraryActionsProvider);
+    final audio = ref.watch(audioControllerProvider);
+    final audioController = ref.read(audioControllerProvider.notifier);
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToInitialAyah());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollToInitialAyah();
+      _maybeScrollToPlayingAyah(audio);
+    });
 
     return Scaffold(
       backgroundColor: AppColors.mushafCream,
@@ -162,6 +192,20 @@ class _ReadingViewState extends ConsumerState<_ReadingView> {
           ],
         ),
         actions: [
+          IconButton(
+            tooltip: strings.playAudio,
+            onPressed: () => audioController.togglePlayPause(
+              surahId: surah.id,
+              verseCount: surah.versesCount,
+              startAyah: widget.initialAyah ?? 1,
+            ),
+            icon: Icon(
+              audio.surahId == surah.id &&
+                      audio.status == AudioStatus.playing
+                  ? Icons.pause_circle_outline
+                  : Icons.headphones_outlined,
+            ),
+          ),
           IconButton(
             tooltip: widget.showTranslation
                 ? strings.hideTranslation
@@ -221,6 +265,9 @@ class _ReadingViewState extends ConsumerState<_ReadingView> {
                       ayahNumber: ayah.number,
                     );
                     final favAsync = ref.watch(isFavoriteProvider(verseRef));
+                    final highlighted = audio.surahId == surah.id &&
+                        audio.ayahNumber == ayah.number &&
+                        audio.isActive;
 
                     return KeyedSubtree(
                       key: _keyFor(ayah.number),
@@ -229,9 +276,16 @@ class _ReadingViewState extends ConsumerState<_ReadingView> {
                         showTranslation: widget.showTranslation,
                         translationFontSize: widget.translationFontSize,
                         isFavorite: favAsync.asData?.value ?? false,
+                        isHighlighted: highlighted,
                         favoriteTooltip: strings.addFavorite,
                         bookmarkTooltip: strings.addBookmark,
                         markPositionTooltip: strings.markPosition,
+                        playTooltip: strings.playFromVerse,
+                        onPlayFromHere: () => audioController.playSurah(
+                          surahId: surah.id,
+                          verseCount: surah.versesCount,
+                          startAyah: ayah.number,
+                        ),
                         onToggleFavorite: () async {
                           final messenger = ScaffoldMessenger.of(context);
                           await actions.toggleFavorite(verseRef);
@@ -269,6 +323,12 @@ class _ReadingViewState extends ConsumerState<_ReadingView> {
                 ),
               ),
             ),
+          ),
+          CompactAudioPlayer(
+            strings: strings,
+            surahId: surah.id,
+            verseCount: surah.versesCount,
+            startAyah: widget.initialAyah ?? 1,
           ),
           _SurahNavBar(
             strings: strings,

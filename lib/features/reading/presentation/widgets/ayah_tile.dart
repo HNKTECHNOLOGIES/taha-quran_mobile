@@ -13,12 +13,15 @@ class AyahTile extends StatelessWidget {
     this.arabicFontSize = 30,
     this.translationFontSize = 16,
     this.isFavorite = false,
+    this.isHighlighted = false,
     this.onToggleFavorite,
     this.onAddBookmark,
     this.onMarkPosition,
+    this.onPlayFromHere,
     this.favoriteTooltip = 'Favori',
     this.bookmarkTooltip = 'Marque-page',
     this.markPositionTooltip = 'Marquer ma position',
+    this.playTooltip = 'Réciter depuis ce verset',
   });
 
   final Ayah ayah;
@@ -26,12 +29,15 @@ class AyahTile extends StatelessWidget {
   final double arabicFontSize;
   final double translationFontSize;
   final bool isFavorite;
+  final bool isHighlighted;
   final VoidCallback? onToggleFavorite;
   final VoidCallback? onAddBookmark;
   final VoidCallback? onMarkPosition;
+  final VoidCallback? onPlayFromHere;
   final String favoriteTooltip;
   final String bookmarkTooltip;
   final String markPositionTooltip;
+  final String playTooltip;
 
   @override
   Widget build(BuildContext context) {
@@ -40,8 +46,23 @@ class AyahTile extends StatelessWidget {
     final hasTranslation =
         showTranslation && (ayah.textFr?.trim().isNotEmpty ?? false);
 
-    return Padding(
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 220),
+      curve: Curves.easeOut,
+      margin: const EdgeInsets.symmetric(horizontal: 4),
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 14),
+      decoration: BoxDecoration(
+        color: isHighlighted
+            ? AppColors.emerald.withValues(alpha: isDark ? 0.22 : 0.08)
+            : Colors.transparent,
+        borderRadius: BorderRadius.circular(12),
+        border: isHighlighted
+            ? Border.all(
+                color: AppColors.gold.withValues(alpha: 0.55),
+                width: 1.2,
+              )
+            : null,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -49,7 +70,7 @@ class AyahTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             textDirection: TextDirection.rtl,
             children: [
-              VerseMedallion(number: ayah.number),
+              VerseMedallion(number: ayah.number, highlighted: isHighlighted),
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
@@ -88,6 +109,17 @@ class AyahTile extends StatelessWidget {
           const SizedBox(height: 4),
           Row(
             children: [
+              if (onPlayFromHere != null)
+                IconButton(
+                  tooltip: playTooltip,
+                  onPressed: onPlayFromHere,
+                  icon: Icon(
+                    Icons.play_circle_outline,
+                    color: isHighlighted
+                        ? AppColors.emeraldDark
+                        : AppColors.emerald,
+                  ),
+                ),
               IconButton(
                 tooltip: favoriteTooltip,
                 onPressed: onToggleFavorite,
@@ -99,12 +131,18 @@ class AyahTile extends StatelessWidget {
               IconButton(
                 tooltip: bookmarkTooltip,
                 onPressed: onAddBookmark,
-                icon: const Icon(Icons.bookmark_add_outlined, color: AppColors.gold),
+                icon: const Icon(
+                  Icons.bookmark_add_outlined,
+                  color: AppColors.gold,
+                ),
               ),
               IconButton(
                 tooltip: markPositionTooltip,
                 onPressed: onMarkPosition,
-                icon: const Icon(Icons.my_location, color: AppColors.emeraldDark),
+                icon: const Icon(
+                  Icons.my_location,
+                  color: AppColors.emeraldDark,
+                ),
               ),
             ],
           ),
@@ -115,9 +153,14 @@ class AyahTile extends StatelessWidget {
 }
 
 class VerseMedallion extends StatelessWidget {
-  const VerseMedallion({super.key, required this.number});
+  const VerseMedallion({
+    super.key,
+    required this.number,
+    this.highlighted = false,
+  });
 
   final int number;
+  final bool highlighted;
 
   @override
   Widget build(BuildContext context) {
@@ -130,12 +173,20 @@ class VerseMedallion extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            AppColors.emerald.withValues(alpha: 0.12),
-            AppColors.gold.withValues(alpha: 0.18),
-          ],
+          colors: highlighted
+              ? [
+                  AppColors.emerald.withValues(alpha: 0.35),
+                  AppColors.gold.withValues(alpha: 0.45),
+                ]
+              : [
+                  AppColors.emerald.withValues(alpha: 0.12),
+                  AppColors.gold.withValues(alpha: 0.18),
+                ],
         ),
-        border: Border.all(color: AppColors.gold, width: 1.5),
+        border: Border.all(
+          color: highlighted ? AppColors.emerald : AppColors.gold,
+          width: highlighted ? 2 : 1.5,
+        ),
         boxShadow: [
           BoxShadow(
             color: AppColors.emerald.withValues(alpha: 0.08),
@@ -146,11 +197,11 @@ class VerseMedallion extends StatelessWidget {
       ),
       child: Text(
         toArabicNumerals(number),
-        style: const TextStyle(
+        style: TextStyle(
           fontFamily: 'Amiri',
           fontSize: 13,
           fontWeight: FontWeight.w700,
-          color: AppColors.emeraldDark,
+          color: highlighted ? Colors.white : AppColors.emeraldDark,
           height: 1,
         ),
       ),
