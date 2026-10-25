@@ -53,7 +53,9 @@ void main() {
     await tester.tap(find.text('الفاتحة'));
     await tester.pumpAndSettle();
 
-    expect(find.textContaining('Al-Fatihah'), findsWidgets);
+    // Écran Mushaf : nom arabe + texte fluide + marqueur de verset
+    expect(find.text('الفاتحة'), findsWidgets);
     expect(find.textContaining('بِسۡمِ'), findsWidgets);
+    expect(find.textContaining('الجزء'), findsOneWidget);
   });
 }

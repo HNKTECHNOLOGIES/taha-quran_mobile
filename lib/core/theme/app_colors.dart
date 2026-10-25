@@ -6,8 +6,9 @@ class AppColors {
   static const Color emerald = Color(0xFF0B6E4F);
   static const Color emeraldDark = Color(0xFF084C37);
   static const Color emeraldSoft = Color(0xFF1A8F6A);
-  static const Color cream = Color(0xFFF7F3EA);
-  static const Color creamDark = Color(0xFFEDE6D6);
+  static const Color cream = Color(0xFFFFF6E8);
+  static const Color creamDark = Color(0xFFF0E4D0);
+  static const Color mushafCream = Color(0xFFFFF6E8);
   static const Color gold = Color(0xFFC9A227);
   static const Color goldSoft = Color(0xFFE2C86A);
   static const Color ink = Color(0xFF1C2B24);
