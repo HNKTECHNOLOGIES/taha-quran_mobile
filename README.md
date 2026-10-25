@@ -5,7 +5,8 @@ Application Flutter (Android / iOS) pour lire le **Saint Coran** (القرآن �
 ## Fonctionnalités (livrées)
 
 - **UC01** — Liste des 114 sourates (nom arabe, translittération, nombre de versets)
-- **UC02** — Lecture d’une sourate (RTL, police Amiri Quran, numéros de versets, hors ligne)
+- **UC02** — Lecture d’une sourate (RTL, grande police, médaillons, séparateurs, nav. sourates)
+- **UC03** — Traduction française Hamidullah (affichage / masquage, asset séparé)
 
 ## Stack
 
@@ -42,6 +43,8 @@ flutter analyze
 |---------|------|
 | `assets/quran/quran_ar.json` | Texte arabe (Uthmani), 114 sourates / 6236 versets |
 | `assets/quran/quran_ar.sha256` | Empreinte SHA-256 |
+| `assets/quran/translations_fr.json` | Traduction FR Muhammad Hamidullah (séparée) |
+| `assets/quran/translations_fr.sha256` | Empreinte SHA-256 traduction |
 | `assets/quran/MANIFEST.json` | Métadonnées source / licence |
 
 Les versets ne sont **jamais** générés ni modifiés par une IA.

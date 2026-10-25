@@ -70,6 +70,24 @@ class AppStrings {
       ? 'متاح دون اتصال'
       : 'Disponible hors ligne';
 
+  String get showTranslation => language == AppLanguage.arabic
+      ? 'إظهار الترجمة'
+      : 'Afficher la traduction';
+
+  String get hideTranslation => language == AppLanguage.arabic
+      ? 'إخفاء الترجمة'
+      : 'Masquer la traduction';
+
+  String get previousSurah =>
+      language == AppLanguage.arabic ? 'السابقة' : 'Précédente';
+
+  String get nextSurah =>
+      language == AppLanguage.arabic ? 'التالية' : 'Suivante';
+
+  String get translationCredit => language == AppLanguage.arabic
+      ? 'ترجمة محمد حميد الله'
+      : 'Traduction Muhammad Hamidullah';
+
   String revelationLabel(String type) {
     final t = type.toLowerCase();
     if (t.contains('medin')) return medinan;

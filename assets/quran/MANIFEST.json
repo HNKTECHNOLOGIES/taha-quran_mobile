@@ -1,9 +1,21 @@
 {
   "source": "quran-json@3.1.2 (Arabic text derived from Tanzil Quran text project)",
-  "license_note": "Tanzil Quran Text \u2014 license: https://tanzil.net/docs/license \u2014 do not modify verses",
+  "license_note": "Tanzil Quran Text — license: https://tanzil.net/docs/license — do not modify verses",
   "file": "quran_ar.json",
   "sha256": "24596287158fdae71efef0d54827d466ae8c16bc0c1ed04248c3f0d8aadbe7dc",
   "surahs": 114,
   "verses": 6236,
-  "script": "Uthmani"
+  "script": "Uthmani",
+  "translations": {
+    "fr": {
+      "file": "translations_fr.json",
+      "sha256": "ed7dc38f8ce4be6a8a9670f98d01e31e9a42bdd299b49e40645d7ec1aa0187d8",
+      "translator": "Muhammad Hamidullah",
+      "edition_identifier": "fr.hamidullah",
+      "source": "AlQuran Cloud API edition fr.hamidullah (verified published translation)",
+      "license_note": "Translation by Muhammad Hamidullah — redistribute with attribution; do not invent or alter meanings. Arabic text remains under Tanzil license separately.",
+      "surahs": 114,
+      "verses": 6236
+    }
+  }
 }

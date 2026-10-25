@@ -51,13 +51,31 @@ void main() {
     }
   });
 
-  test('intégrité — total 6236 versets', () async {
+  test('UC03 — traduction FR Hamidullah sous chaque verset (asset local)', () async {
+    final fatiha = await repository.getSurah(1);
+    expect(fatiha.ayahs.first.textFr, isNotNull);
+    expect(
+      fatiha.ayahs.first.textFr,
+      contains('Tout Miséricordieux'),
+    );
+    for (final ayah in fatiha.ayahs) {
+      expect(ayah.textFr?.trim(), isNotEmpty);
+    }
+
+    // Le texte arabe n’est pas altéré par la traduction.
+    expect(fatiha.ayahs.first.textAr, isNot(contains('Allah')));
+  });
+
+  test('intégrité — total 6236 versets arabes + FR', () async {
     final surahs = await repository.getSurahs();
-    var total = 0;
+    var totalAr = 0;
+    var totalFr = 0;
     for (final s in surahs) {
       final detail = await repository.getSurah(s.id);
-      total += detail.ayahs.length;
+      totalAr += detail.ayahs.length;
+      totalFr += detail.ayahs.where((a) => (a.textFr ?? '').isNotEmpty).length;
     }
-    expect(total, QuranConstants.verseCount);
+    expect(totalAr, QuranConstants.verseCount);
+    expect(totalFr, QuranConstants.verseCount);
   });
 }

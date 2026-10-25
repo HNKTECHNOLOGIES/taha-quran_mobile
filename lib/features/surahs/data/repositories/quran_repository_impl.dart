@@ -17,6 +17,9 @@ class QuranRepositoryImpl implements QuranRepository {
 
   QuranLocalDataSource? _local;
   List<SurahModel>? _memoryCache;
+
+  /// Traductions FR séparées du texte arabe (jamais mélangées dans les assets AR).
+  Map<int, Map<int, String>> _frenchBySurah = {};
   bool _initialized = false;
 
   @override
@@ -24,6 +27,8 @@ class QuranRepositoryImpl implements QuranRepository {
     if (_initialized) return;
 
     final surahs = await assetDataSource.loadArabicQuran();
+    _frenchBySurah = await assetDataSource.loadFrenchTranslations();
+
     final db = await database.open();
 
     if (db != null) {
@@ -32,7 +37,6 @@ class QuranRepositoryImpl implements QuranRepository {
         await _local!.seed(surahs);
       }
     } else {
-      // Web / environnement sans SQLite : cache mémoire hors ligne.
       _memoryCache = surahs;
     }
 
@@ -41,6 +45,13 @@ class QuranRepositoryImpl implements QuranRepository {
 
   Future<void> _ensureReady() async {
     if (!_initialized) await initialize();
+  }
+
+  List<Ayah> _withFrench(int surahId, List<Ayah> ayahs) {
+    final fr = _frenchBySurah[surahId] ?? const {};
+    return ayahs
+        .map((a) => a.copyWith(textFr: fr[a.number]))
+        .toList(growable: false);
   }
 
   @override
@@ -76,18 +87,24 @@ class QuranRepositoryImpl implements QuranRepository {
   @override
   Future<Surah> getSurah(int surahId) async {
     await _ensureReady();
+    final Surah base;
     if (_local != null) {
-      return _local!.getSurah(surahId);
+      base = await _local!.getSurah(surahId);
+    } else {
+      base = _memoryCache!.firstWhere((s) => s.id == surahId);
     }
-    return _memoryCache!.firstWhere((s) => s.id == surahId);
+    return base.copyWith(ayahs: _withFrench(surahId, base.ayahs));
   }
 
   @override
   Future<List<Ayah>> getAyahs(int surahId) async {
     await _ensureReady();
+    final List<Ayah> ayahs;
     if (_local != null) {
-      return _local!.getAyahs(surahId);
+      ayahs = await _local!.getAyahs(surahId);
+    } else {
+      ayahs = _memoryCache!.firstWhere((s) => s.id == surahId).ayahs;
     }
-    return _memoryCache!.firstWhere((s) => s.id == surahId).ayahs;
+    return _withFrench(surahId, ayahs);
   }
 }

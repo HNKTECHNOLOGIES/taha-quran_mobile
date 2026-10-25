@@ -1,199 +1,175 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../app/l10n/app_strings.dart';
 import '../../../../app/providers/locale_provider.dart';
+import '../../../../app/providers/reading_settings_provider.dart';
+import '../../../../core/constants/quran_constants.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../../core/utils/arabic_numerals.dart';
-import '../../../../core/utils/juz_utils.dart';
 import '../../../../shared/widgets/error_view.dart';
 import '../../../../shared/widgets/loading_view.dart';
 import '../../../surahs/domain/entities/surah.dart';
 import '../../../surahs/presentation/providers/quran_providers.dart';
-import '../widgets/mushaf_page.dart';
+import '../widgets/ayah_tile.dart';
 
-/// Fond crème type page de Mushaf.
-const Color _mushafCream = Color(0xFFFFF6E8);
-
-class ReadingScreen extends ConsumerStatefulWidget {
+class ReadingScreen extends ConsumerWidget {
   const ReadingScreen({super.key, required this.surahId});
 
   final int surahId;
 
   @override
-  ConsumerState<ReadingScreen> createState() => _ReadingScreenState();
-}
-
-class _ReadingScreenState extends ConsumerState<ReadingScreen> {
-  final PageController _pageController = PageController();
-  int _pageIndex = 0;
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final s = ref.watch(localeProvider);
-    final asyncSurah = ref.watch(surahDetailProvider(widget.surahId));
+    final settings = ref.watch(readingSettingsProvider);
+    final asyncSurah = ref.watch(surahDetailProvider(surahId));
 
     return asyncSurah.when(
-      loading: () => const Scaffold(
-        backgroundColor: _mushafCream,
-        body: LoadingView(),
+      loading: () => Scaffold(
+        backgroundColor: AppColors.mushafCream,
+        appBar: AppBar(
+          backgroundColor: AppColors.emerald,
+          foregroundColor: Colors.white,
+        ),
+        body: LoadingView(message: s.loading),
       ),
       error: (e, _) => Scaffold(
-        backgroundColor: _mushafCream,
+        backgroundColor: AppColors.mushafCream,
         appBar: AppBar(
-          backgroundColor: _mushafCream,
-          foregroundColor: AppColors.emeraldDark,
-          elevation: 0,
+          backgroundColor: AppColors.emerald,
+          foregroundColor: Colors.white,
         ),
         body: ErrorView(
           message: '${s.errorTitle}: $e',
           retryLabel: s.retry,
-          onRetry: () =>
-              ref.invalidate(surahDetailProvider(widget.surahId)),
+          onRetry: () => ref.invalidate(surahDetailProvider(surahId)),
         ),
       ),
-      data: (surah) => _MushafReader(
+      data: (surah) => _ReadingView(
         surah: surah,
-        pageController: _pageController,
-        pageIndex: _pageIndex,
-        onPageChanged: (i) => setState(() => _pageIndex = i),
+        strings: s,
+        showTranslation: settings.showFrenchTranslation,
+        onToggleTranslation: () =>
+            ref.read(readingSettingsProvider.notifier).toggleFrenchTranslation(),
       ),
     );
   }
 }
 
-class _MushafReader extends StatelessWidget {
-  const _MushafReader({
+class _ReadingView extends StatelessWidget {
+  const _ReadingView({
     required this.surah,
-    required this.pageController,
-    required this.pageIndex,
-    required this.onPageChanged,
+    required this.strings,
+    required this.showTranslation,
+    required this.onToggleTranslation,
   });
 
   final Surah surah;
-  final PageController pageController;
-  final int pageIndex;
-  final ValueChanged<int> onPageChanged;
+  final AppStrings strings;
+  final bool showTranslation;
+  final VoidCallback onToggleTranslation;
+
+  void _goToSurah(BuildContext context, int id) {
+    if (id < 1 || id > QuranConstants.surahCount) return;
+    context.pushReplacement('/surahs/$id');
+  }
 
   @override
   Widget build(BuildContext context) {
-    final pages = paginateAyahs(surah.ayahs);
-    final safeIndex =
-        pages.isEmpty ? 0 : pageIndex.clamp(0, pages.length - 1);
-    final firstAyahNumber =
-        pages.isEmpty ? 1 : pages[safeIndex].first.number;
-    final juz = juzFor(surahId: surah.id, ayahNumber: firstAyahNumber);
+    final hasPrev = surah.id > 1;
+    final hasNext = surah.id < QuranConstants.surahCount;
 
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        backgroundColor: _mushafCream,
-        body: SafeArea(
-          child: Column(
-            children: [
-              _MushafHeader(
-                surahNameAr: surah.nameAr,
-                juz: juz,
-                onBack: () => Navigator.of(context).maybePop(),
+    return Scaffold(
+      backgroundColor: AppColors.mushafCream,
+      appBar: AppBar(
+        backgroundColor: AppColors.emerald,
+        foregroundColor: Colors.white,
+        elevation: 0,
+        title: Column(
+          children: [
+            Text(
+              surah.nameAr,
+              textDirection: TextDirection.rtl,
+              style: const TextStyle(
+                fontFamily: 'AmiriQuran',
+                fontSize: 24,
+                height: 1.2,
               ),
-              Expanded(
-                child: PageView.builder(
-                  controller: pageController,
-                  itemCount: pages.length,
-                  onPageChanged: onPageChanged,
-                  // En RTL, glisser vers la gauche = page suivante (comme un Mushaf).
-                  reverse: false,
+            ),
+            Text(
+              '${surah.transliteration} · ${strings.verseCountLabel(surah.versesCount)}',
+              style: const TextStyle(fontSize: 12, color: Colors.white70),
+            ),
+          ],
+        ),
+        actions: [
+          IconButton(
+            tooltip: showTranslation
+                ? strings.hideTranslation
+                : strings.showTranslation,
+            onPressed: onToggleTranslation,
+            icon: Icon(
+              showTranslation
+                  ? Icons.translate
+                  : Icons.translate_outlined,
+              color: showTranslation ? AppColors.goldSoft : Colors.white,
+            ),
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          if (showTranslation)
+            Container(
+              width: double.infinity,
+              color: AppColors.creamDark.withValues(alpha: 0.55),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+              child: Text(
+                strings.translationCredit,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 12,
+                  color: AppColors.inkMuted.withValues(alpha: 0.9),
+                ),
+              ),
+            ),
+          Expanded(
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 720),
+                child: ListView.separated(
+                  padding: const EdgeInsets.fromLTRB(12, 8, 12, 24),
+                  itemCount: surah.ayahs.length +
+                      (surah.id != 1 && surah.id != 9 ? 1 : 0),
+                  separatorBuilder: (context, index) {
+                    // Pas de séparateur avant le premier verset après basmala.
+                    final hasBasmala = surah.id != 1 && surah.id != 9;
+                    if (hasBasmala && index == 0) {
+                      return const SizedBox(height: 4);
+                    }
+                    return const AyahSeparator();
+                  },
                   itemBuilder: (context, index) {
-                    final showBasmala = surah.id != 1 &&
-                        surah.id != 9 &&
-                        index == 0;
-                    return MushafPage(
-                      ayahs: pages[index],
-                      showBasmala: showBasmala,
+                    final hasBasmala = surah.id != 1 && surah.id != 9;
+                    if (hasBasmala && index == 0) {
+                      return const _BasmalaHeader();
+                    }
+                    final ayahIndex = hasBasmala ? index - 1 : index;
+                    return AyahTile(
+                      ayah: surah.ayahs[ayahIndex],
+                      showTranslation: showTranslation,
                     );
                   },
                 ),
               ),
-              _MushafFooter(
-                pageNumber: safeIndex + 1,
-                totalPages: pages.length,
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _MushafHeader extends StatelessWidget {
-  const _MushafHeader({
-    required this.surahNameAr,
-    required this.juz,
-    required this.onBack,
-  });
-
-  final String surahNameAr;
-  final int juz;
-  final VoidCallback onBack;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(8, 4, 8, 0),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              IconButton(
-                onPressed: onBack,
-                icon: const Icon(Icons.arrow_forward_ios, size: 18),
-                color: AppColors.emerald.withValues(alpha: 0.7),
-                tooltip: 'Retour',
-              ),
-              Expanded(
-                // LTR pour positionner comme sur un Mushaf imprimé :
-                // sourate à gauche, juz à droite.
-                child: Directionality(
-                  textDirection: TextDirection.ltr,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        surahNameAr,
-                        textDirection: TextDirection.rtl,
-                        style: const TextStyle(
-                          fontFamily: 'AmiriQuran',
-                          fontSize: 20,
-                          color: AppColors.emerald,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      Text(
-                        'الجزء ${toArabicNumerals(juz)}',
-                        textDirection: TextDirection.rtl,
-                        style: const TextStyle(
-                          fontFamily: 'Amiri',
-                          fontSize: 18,
-                          color: AppColors.emerald,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(width: 40),
-            ],
-          ),
-          Container(
-            height: 1,
-            margin: const EdgeInsets.symmetric(horizontal: 12),
-            color: AppColors.gold.withValues(alpha: 0.35),
+          _SurahNavBar(
+            strings: strings,
+            hasPrev: hasPrev,
+            hasNext: hasNext,
+            onPrev: () => _goToSurah(context, surah.id - 1),
+            onNext: () => _goToSurah(context, surah.id + 1),
           ),
         ],
       ),
@@ -201,45 +177,90 @@ class _MushafHeader extends StatelessWidget {
   }
 }
 
-class _MushafFooter extends StatelessWidget {
-  const _MushafFooter({
-    required this.pageNumber,
-    required this.totalPages,
-  });
-
-  final int pageNumber;
-  final int totalPages;
+class _BasmalaHeader extends StatelessWidget {
+  const _BasmalaHeader();
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 4, 20, 12),
-      child: Directionality(
-        textDirection: TextDirection.ltr,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            if (totalPages > 1)
-              Padding(
-                padding: const EdgeInsets.only(right: 12),
-                child: Text(
-                  '${toArabicNumerals(pageNumber)} / ${toArabicNumerals(totalPages)}',
-                  style: TextStyle(
-                    fontFamily: 'Amiri',
-                    fontSize: 13,
-                    color: AppColors.inkMuted.withValues(alpha: 0.65),
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+      child: Text(
+        'بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ',
+        textAlign: TextAlign.center,
+        textDirection: TextDirection.rtl,
+        style: TextStyle(
+          fontFamily: 'AmiriQuran',
+          fontSize: 26,
+          height: 1.8,
+          color: AppColors.emerald.withValues(alpha: 0.9),
+        ),
+      ),
+    );
+  }
+}
+
+class _SurahNavBar extends StatelessWidget {
+  const _SurahNavBar({
+    required this.strings,
+    required this.hasPrev,
+    required this.hasNext,
+    required this.onPrev,
+    required this.onNext,
+  });
+
+  final AppStrings strings;
+  final bool hasPrev;
+  final bool hasNext;
+  final VoidCallback onPrev;
+  final VoidCallback onNext;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      elevation: 6,
+      color: Colors.white,
+      child: SafeArea(
+        top: false,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 720),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      onPressed: hasPrev ? onPrev : null,
+                      icon: const Icon(Icons.chevron_left),
+                      label: Text(strings.previousSurah),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: AppColors.emerald,
+                        side: BorderSide(
+                          color: hasPrev
+                              ? AppColors.emerald
+                              : AppColors.creamDark,
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            Text(
-              toArabicNumerals(pageNumber),
-              style: TextStyle(
-                fontFamily: 'Amiri',
-                fontSize: 20,
-                color: AppColors.ink.withValues(alpha: 0.8),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: FilledButton.icon(
+                      onPressed: hasNext ? onNext : null,
+                      icon: const Icon(Icons.chevron_right),
+                      label: Text(strings.nextSurah),
+                      style: FilledButton.styleFrom(
+                        backgroundColor: AppColors.emerald,
+                        disabledBackgroundColor: AppColors.creamDark,
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
+          ),
         ),
       ),
     );

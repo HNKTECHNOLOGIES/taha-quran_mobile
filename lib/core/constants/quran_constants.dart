@@ -17,6 +17,8 @@ class QuranConstants {
   ];
 
   static const String arabicAssetPath = 'assets/quran/quran_ar.json';
+  static const String frenchTranslationAssetPath =
+      'assets/quran/translations_fr.json';
   static const String manifestAssetPath = 'assets/quran/MANIFEST.json';
   static const String sha256AssetPath = 'assets/quran/quran_ar.sha256';
 }

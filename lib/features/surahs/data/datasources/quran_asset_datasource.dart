@@ -16,11 +16,63 @@ class QuranAssetDataSource {
         .map((e) => SurahModel.fromJson(e as Map<String, dynamic>))
         .toList();
 
-    _validate(surahs);
+    _validateArabic(surahs);
     return surahs;
   }
 
-  void _validate(List<SurahModel> surahs) {
+  /// Charge la traduction FR (Hamidullah) : map[surahId][ayahNumber] -> texte.
+  Future<Map<int, Map<int, String>>> loadFrenchTranslations() async {
+    await AssetIntegrity.verifyFrenchTranslationAsset();
+
+    final raw =
+        await rootBundle.loadString(QuranConstants.frenchTranslationAssetPath);
+    final list = jsonDecode(raw) as List<dynamic>;
+
+    if (list.length != QuranConstants.surahCount) {
+      throw AssetIntegrityException(
+        'Expected ${QuranConstants.surahCount} FR surahs, got ${list.length}',
+      );
+    }
+
+    final result = <int, Map<int, String>>{};
+    var total = 0;
+
+    for (var i = 0; i < list.length; i++) {
+      final item = list[i] as Map<String, dynamic>;
+      final surahId = item['id'] as int;
+      if (surahId != i + 1) {
+        throw AssetIntegrityException('FR surah order mismatch at $i');
+      }
+      final verses = item['verses'] as List<dynamic>;
+      final expected = QuranConstants.versesPerSurah[i];
+      if (verses.length != expected) {
+        throw AssetIntegrityException(
+          'FR surah $surahId count ${verses.length} != $expected',
+        );
+      }
+      final map = <int, String>{};
+      for (var j = 0; j < verses.length; j++) {
+        final v = verses[j] as Map<String, dynamic>;
+        final number = v['number'] as int;
+        final text = (v['text_fr'] as String).trim();
+        if (number != j + 1 || text.isEmpty) {
+          throw AssetIntegrityException('Invalid FR ayah $surahId:$number');
+        }
+        map[number] = text;
+      }
+      result[surahId] = map;
+      total += map.length;
+    }
+
+    if (total != QuranConstants.verseCount) {
+      throw AssetIntegrityException(
+        'Expected ${QuranConstants.verseCount} FR verses, got $total',
+      );
+    }
+    return result;
+  }
+
+  void _validateArabic(List<SurahModel> surahs) {
     if (surahs.length != QuranConstants.surahCount) {
       throw AssetIntegrityException(
         'Expected ${QuranConstants.surahCount} surahs, got ${surahs.length}',
