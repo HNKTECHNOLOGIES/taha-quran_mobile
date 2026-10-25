@@ -40,141 +40,190 @@ class CompactAudioPlayer extends ConsumerWidget {
         (audio.isActive || audio.status == AudioStatus.completed);
 
     return Material(
-      elevation: 4,
+      elevation: 10,
       color: Colors.white,
+      shadowColor: AppColors.emerald.withValues(alpha: 0.35),
       child: SafeArea(
         top: false,
         bottom: false,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
-          child: Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 720),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: InkWell(
-                          onTap: () => _showReciterSheet(context, ref),
-                          borderRadius: BorderRadius.circular(8),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 4,
-                              vertical: 2,
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  reciter.nameEn,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    fontFamily: 'SourceSerif4',
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.emeraldDark,
-                                  ),
-                                ),
-                                Text(
-                                  ayahLabel,
-                                  style: TextStyle(
-                                    fontFamily: 'SourceSerif4',
-                                    fontSize: 12,
-                                    color: AppColors.inkMuted.withValues(
-                                      alpha: 0.9,
-                                    ),
-                                  ),
-                                ),
-                              ],
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            border: Border(
+              top: BorderSide(
+                color: AppColors.gold.withValues(alpha: 0.65),
+                width: 2,
+              ),
+            ),
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                AppColors.emerald.withValues(alpha: 0.06),
+                Colors.white,
+              ],
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(12, 10, 12, 8),
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 720),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.headphones_rounded,
+                          size: 16,
+                          color: AppColors.emerald.withValues(alpha: 0.9),
+                        ),
+                        const SizedBox(width: 6),
+                        Expanded(
+                          child: Text(
+                            strings.recitationPlayer,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontFamily: 'SourceSerif4',
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 0.2,
+                              color: AppColors.emeraldDark,
                             ),
                           ),
                         ),
-                      ),
-                      IconButton(
-                        tooltip: strings.previousVerse,
-                        onPressed: canSkip ? () => controller.previous() : null,
-                        icon: const Icon(Icons.skip_previous_rounded),
-                        color: AppColors.emerald,
-                      ),
-                      _PlayButton(
-                        busy: busy,
-                        playing: playing,
-                        hasError:
-                            audio.status == AudioStatus.error && isThisSurah,
-                        onPressed: () => controller.togglePlayPause(
-                          surahId: surahId,
-                          verseCount: verseCount,
-                          startAyah: isThisSurah
-                              ? (audio.ayahNumber ?? startAyah)
-                              : startAyah,
+                        const SizedBox(width: 8),
+                        Flexible(
+                          child: Text(
+                            ReciterCatalog.attribution,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.end,
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: AppColors.inkMuted.withValues(alpha: 0.7),
+                            ),
+                          ),
                         ),
-                      ),
-                      IconButton(
-                        tooltip: strings.nextVerse,
-                        onPressed: canSkip ? () => controller.next() : null,
-                        icon: const Icon(Icons.skip_next_rounded),
-                        color: AppColors.emerald,
-                      ),
-                      IconButton(
-                        tooltip: strings.stopAudio,
-                        onPressed: isThisSurah &&
-                                audio.status != AudioStatus.idle
-                            ? () => controller.stop()
-                            : null,
-                        icon: const Icon(Icons.stop_rounded),
-                        color: AppColors.inkMuted,
-                      ),
-                    ],
-                  ),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(2),
-                    child: LinearProgressIndicator(
-                      value: busy ? null : progress,
-                      minHeight: 3,
-                      backgroundColor: AppColors.creamDark,
-                      color: AppColors.emerald,
+                      ],
                     ),
-                  ),
-                  if (audio.status == AudioStatus.error && isThisSurah)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 6),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              strings.audioError,
-                              style: const TextStyle(
-                                fontSize: 12,
-                                color: Colors.redAccent,
-                                fontFamily: 'SourceSerif4',
+                    const SizedBox(height: 6),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: InkWell(
+                            onTap: () => _showReciterSheet(context, ref),
+                            borderRadius: BorderRadius.circular(8),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 4,
+                                vertical: 2,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    reciter.nameEn,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontFamily: 'SourceSerif4',
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.emeraldDark,
+                                    ),
+                                  ),
+                                  Text(
+                                    ayahLabel,
+                                    style: TextStyle(
+                                      fontFamily: 'SourceSerif4',
+                                      fontSize: 12,
+                                      color: AppColors.inkMuted.withValues(
+                                        alpha: 0.9,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
-                          TextButton(
-                            onPressed: () => controller.playSurah(
-                              surahId: surahId,
-                              verseCount: verseCount,
-                              startAyah: audio.ayahNumber ?? startAyah,
-                            ),
-                            child: Text(strings.retry),
+                        ),
+                        IconButton(
+                          tooltip: strings.previousVerse,
+                          onPressed:
+                              canSkip ? () => controller.previous() : null,
+                          icon: const Icon(Icons.skip_previous_rounded),
+                          color: AppColors.emerald,
+                        ),
+                        _PlayButton(
+                          busy: busy,
+                          playing: playing,
+                          hasError: audio.status == AudioStatus.error &&
+                              isThisSurah,
+                          onPressed: () => controller.togglePlayPause(
+                            surahId: surahId,
+                            verseCount: verseCount,
+                            startAyah: isThisSurah
+                                ? (audio.ayahNumber ?? startAyah)
+                                : startAyah,
                           ),
-                        ],
+                        ),
+                        IconButton(
+                          tooltip: strings.nextVerse,
+                          onPressed: canSkip ? () => controller.next() : null,
+                          icon: const Icon(Icons.skip_next_rounded),
+                          color: AppColors.emerald,
+                        ),
+                        IconButton(
+                          tooltip: strings.stopAudio,
+                          onPressed: isThisSurah &&
+                                  audio.status != AudioStatus.idle
+                              ? () => controller.stop()
+                              : null,
+                          icon: const Icon(Icons.stop_rounded),
+                          color: AppColors.inkMuted,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(2),
+                      child: LinearProgressIndicator(
+                        value: busy ? null : progress,
+                        minHeight: 4,
+                        backgroundColor: AppColors.creamDark,
+                        color: AppColors.emerald,
                       ),
                     ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      ReciterCatalog.attribution,
-                      style: TextStyle(
-                        fontSize: 10,
-                        color: AppColors.inkMuted.withValues(alpha: 0.7),
+                    if (audio.status == AudioStatus.error && isThisSurah)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 6),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                strings.audioError,
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.redAccent,
+                                  fontFamily: 'SourceSerif4',
+                                ),
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () => controller.playSurah(
+                                surahId: surahId,
+                                verseCount: verseCount,
+                                startAyah: audio.ayahNumber ?? startAyah,
+                              ),
+                              child: Text(strings.retry),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

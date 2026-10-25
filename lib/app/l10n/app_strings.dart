@@ -211,6 +211,17 @@ class AppStrings {
       ? 'تلاوة من هذه الآية'
       : 'Réciter depuis ce verset';
 
+  String get listenRecitation => language == AppLanguage.arabic
+      ? 'استمع للتلاوة'
+      : 'Écouter une récitation';
+
+  String get listenRecitationHint => language == AppLanguage.arabic
+      ? 'افتح سورة ثم استخدم المشغّل في الأسفل'
+      : 'Ouvrez une sourate : le lecteur est en bas de l’écran';
+
+  String get recitationPlayer =>
+      language == AppLanguage.arabic ? 'مشغّل التلاوة' : 'Lecteur de récitation';
+
   String revelationLabel(String type) {
     final t = type.toLowerCase();
     if (t.contains('medin')) return medinan;

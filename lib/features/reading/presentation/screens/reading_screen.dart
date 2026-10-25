@@ -237,6 +237,49 @@ class _ReadingViewState extends ConsumerState<_ReadingView> {
                 ),
               ),
             ),
+          if (!audio.isActive || audio.surahId != surah.id)
+            Material(
+              color: AppColors.emerald.withValues(alpha: 0.08),
+              child: InkWell(
+                onTap: () => audioController.togglePlayPause(
+                  surahId: surah.id,
+                  verseCount: surah.versesCount,
+                  startAyah: widget.initialAyah ?? 1,
+                ),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.play_circle_filled_rounded,
+                        color: AppColors.emerald,
+                        size: 28,
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Text(
+                          strings.listenRecitationHint,
+                          style: const TextStyle(
+                            fontFamily: 'SourceSerif4',
+                            fontSize: 13,
+                            color: AppColors.emeraldDark,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        strings.playAudio,
+                        style: const TextStyle(
+                          fontFamily: 'SourceSerif4',
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.emerald,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
           Expanded(
             child: Center(
               child: ConstrainedBox(

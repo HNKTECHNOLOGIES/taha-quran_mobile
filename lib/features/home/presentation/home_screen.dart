@@ -139,6 +139,12 @@ class HomeScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: 12),
                   _SecondaryActionButton(
+                    label: s.listenRecitation,
+                    icon: Icons.headphones_rounded,
+                    onPressed: () => context.push('/surahs/1'),
+                  ),
+                  const SizedBox(height: 12),
+                  _SecondaryActionButton(
                     label: s.myFavorites,
                     icon: Icons.favorite_rounded,
                     badge: favoritesAsync.asData?.value.length,
@@ -395,7 +401,13 @@ class _SecondaryActionButton extends StatelessWidget {
       children: [
         Icon(icon, size: 22),
         const SizedBox(width: 10),
-        Text(label),
+        Flexible(
+          child: Text(
+            label,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+          ),
+        ),
         if (badge != null && badge! > 0) ...[
           const SizedBox(width: 10),
           Container(

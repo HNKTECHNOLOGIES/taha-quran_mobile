@@ -22,6 +22,7 @@ void main() {
     expect(find.text('السلام عليكم'), findsOneWidget);
     expect(find.text('القرآن الكريم'), findsWidgets);
     expect(find.text('Lire le Coran'), findsOneWidget);
+    expect(find.text('Écouter une récitation'), findsOneWidget);
     expect(find.text('Mes favoris'), findsOneWidget);
     expect(find.text('Marque-pages'), findsWidgets);
   });
