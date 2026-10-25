@@ -47,6 +47,57 @@ class AppStrings {
       ? 'ستتوفر قريباً'
       : 'Bientôt disponible';
 
+  String get noResumeYet => language == AppLanguage.arabic
+      ? 'علّم موضعك أثناء القراءة'
+      : 'Marquez votre position pendant la lecture';
+
+  String get verse => language == AppLanguage.arabic ? 'آية' : 'Verset';
+
+  String get bookmarks =>
+      language == AppLanguage.arabic ? 'العلامات' : 'Marque-pages';
+
+  String get noFavorites => language == AppLanguage.arabic
+      ? 'لا توجد آيات في المفضلة بعد'
+      : 'Aucun verset favori pour le moment';
+
+  String get noBookmarks => language == AppLanguage.arabic
+      ? 'لا توجد علامات بعد'
+      : 'Aucun marque-page pour le moment';
+
+  String get addFavorite =>
+      language == AppLanguage.arabic ? 'المفضلة' : 'Favori';
+
+  String get removeFavorite => language == AppLanguage.arabic
+      ? 'إزالة من المفضلة'
+      : 'Retirer des favoris';
+
+  String get favoriteAdded => language == AppLanguage.arabic
+      ? 'أُضيف إلى المفضلة'
+      : 'Ajouté aux favoris';
+
+  String get favoriteRemoved => language == AppLanguage.arabic
+      ? 'أُزيل من المفضلة'
+      : 'Retiré des favoris';
+
+  String get addBookmark =>
+      language == AppLanguage.arabic ? 'علامة' : 'Marque-page';
+
+  String get removeBookmark => language == AppLanguage.arabic
+      ? 'حذف العلامة'
+      : 'Supprimer le marque-page';
+
+  String get bookmarkAdded => language == AppLanguage.arabic
+      ? 'تم حفظ العلامة'
+      : 'Marque-page enregistré';
+
+  String get markPosition => language == AppLanguage.arabic
+      ? 'تعليم موقعي'
+      : 'Marquer ma position';
+
+  String get positionMarked => language == AppLanguage.arabic
+      ? 'تم حفظ موضع القراءة'
+      : 'Position de lecture enregistrée';
+
   String get verses => language == AppLanguage.arabic ? 'آيات' : 'versets';
 
   String get meccan =>

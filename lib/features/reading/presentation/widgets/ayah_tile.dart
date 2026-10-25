@@ -4,7 +4,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/arabic_numerals.dart';
 import '../../../surahs/domain/entities/ayah.dart';
 
-/// Verset : médaillon + arabe RTL + traduction FR optionnelle (LTR).
+/// Verset : médaillon + arabe RTL + traduction FR + actions bibliothèque.
 class AyahTile extends StatelessWidget {
   const AyahTile({
     super.key,
@@ -12,12 +12,26 @@ class AyahTile extends StatelessWidget {
     this.showTranslation = true,
     this.arabicFontSize = 30,
     this.translationFontSize = 16,
+    this.isFavorite = false,
+    this.onToggleFavorite,
+    this.onAddBookmark,
+    this.onMarkPosition,
+    this.favoriteTooltip = 'Favori',
+    this.bookmarkTooltip = 'Marque-page',
+    this.markPositionTooltip = 'Marquer ma position',
   });
 
   final Ayah ayah;
   final bool showTranslation;
   final double arabicFontSize;
   final double translationFontSize;
+  final bool isFavorite;
+  final VoidCallback? onToggleFavorite;
+  final VoidCallback? onAddBookmark;
+  final VoidCallback? onMarkPosition;
+  final String favoriteTooltip;
+  final String bookmarkTooltip;
+  final String markPositionTooltip;
 
   @override
   Widget build(BuildContext context) {
@@ -71,6 +85,29 @@ class AyahTile extends StatelessWidget {
               ),
             ),
           ],
+          const SizedBox(height: 4),
+          Row(
+            children: [
+              IconButton(
+                tooltip: favoriteTooltip,
+                onPressed: onToggleFavorite,
+                icon: Icon(
+                  isFavorite ? Icons.favorite : Icons.favorite_border,
+                  color: isFavorite ? Colors.redAccent : AppColors.emerald,
+                ),
+              ),
+              IconButton(
+                tooltip: bookmarkTooltip,
+                onPressed: onAddBookmark,
+                icon: const Icon(Icons.bookmark_add_outlined, color: AppColors.gold),
+              ),
+              IconButton(
+                tooltip: markPositionTooltip,
+                onPressed: onMarkPosition,
+                icon: const Icon(Icons.my_location, color: AppColors.emeraldDark),
+              ),
+            ],
+          ),
         ],
       ),
     );

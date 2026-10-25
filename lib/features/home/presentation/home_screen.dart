@@ -5,6 +5,8 @@ import 'package:go_router/go_router.dart';
 import '../../../app/l10n/app_strings.dart';
 import '../../../app/providers/locale_provider.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../library/presentation/providers/library_providers.dart';
+import '../../surahs/presentation/providers/quran_providers.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -13,6 +15,7 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final s = ref.watch(localeProvider);
     final size = MediaQuery.sizeOf(context);
+    final resumeAsync = ref.watch(readingPositionProvider);
 
     return Scaffold(
       body: Container(
@@ -123,19 +126,96 @@ class HomeScreen extends ConsumerWidget {
                   child: Text(s.browseSurahs),
                 ),
                 const SizedBox(height: 12),
-                OutlinedButton(
-                  onPressed: null,
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    disabledForegroundColor: Colors.white70,
-                    side: const BorderSide(color: Colors.white54),
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                  ),
-                  child: Text('${s.continueReading} — ${s.continueReadingHint}'),
+                resumeAsync.when(
+                  loading: () => const SizedBox(height: 48),
+                  error: (_, _) => const SizedBox.shrink(),
+                  data: (pos) {
+                    if (pos == null) {
+                      return OutlinedButton(
+                        onPressed: null,
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          disabledForegroundColor: Colors.white70,
+                          side: const BorderSide(color: Colors.white54),
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                        ),
+                        child: Text(s.noResumeYet),
+                      );
+                    }
+                    return _ContinueCard(
+                      strings: s,
+                      surahId: pos.ref.surahId,
+                      ayahNumber: pos.ref.ayahNumber,
+                    );
+                  },
                 ),
                 const SizedBox(height: 24),
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ContinueCard extends ConsumerWidget {
+  const _ContinueCard({
+    required this.strings,
+    required this.surahId,
+    required this.ayahNumber,
+  });
+
+  final AppStrings strings;
+  final int surahId;
+  final int ayahNumber;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final surahAsync = ref.watch(surahDetailProvider(surahId));
+    final subtitle = surahAsync.maybeWhen(
+      data: (s) => '${s.nameAr} · ${strings.verse} $ayahNumber',
+      orElse: () => '${strings.verse} $ayahNumber',
+    );
+
+    return Material(
+      color: Colors.white.withValues(alpha: 0.12),
+      borderRadius: BorderRadius.circular(14),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(14),
+        onTap: () => context.push('/surahs/$surahId?ayah=$ayahNumber'),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          child: Row(
+            children: [
+              const Icon(Icons.menu_book, color: AppColors.goldSoft),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      strings.continueReading,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                      ),
+                    ),
+                    Text(
+                      subtitle,
+                      textDirection: TextDirection.rtl,
+                      style: TextStyle(
+                        color: Colors.white.withValues(alpha: 0.85),
+                        fontFamily: 'AmiriQuran',
+                        fontSize: 15,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Icon(Icons.chevron_right, color: Colors.white70),
+            ],
           ),
         ),
       ),

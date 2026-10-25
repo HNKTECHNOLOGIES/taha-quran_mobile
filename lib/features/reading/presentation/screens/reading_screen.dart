@@ -9,6 +9,8 @@ import '../../../../core/constants/quran_constants.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../shared/widgets/error_view.dart';
 import '../../../../shared/widgets/loading_view.dart';
+import '../../../library/domain/entities/verse_ref.dart';
+import '../../../library/presentation/providers/library_providers.dart';
 import '../../../surahs/domain/entities/surah.dart';
 import '../../../surahs/presentation/providers/quran_providers.dart';
 import '../../../translations/domain/entities/ayah_translation.dart';
@@ -16,9 +18,14 @@ import '../../../translations/presentation/providers/translation_providers.dart'
 import '../widgets/ayah_tile.dart';
 
 class ReadingScreen extends ConsumerWidget {
-  const ReadingScreen({super.key, required this.surahId});
+  const ReadingScreen({
+    super.key,
+    required this.surahId,
+    this.initialAyah,
+  });
 
   final int surahId;
+  final int? initialAyah;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -52,6 +59,7 @@ class ReadingScreen extends ConsumerWidget {
       data: (surah) => _ReadingView(
         surah: surah,
         strings: s,
+        initialAyah: initialAyah,
         showTranslation: settings.showFrenchTranslation,
         translationFontSize: settings.translationFontSize,
         translationInfo: translationInfo,
@@ -62,7 +70,7 @@ class ReadingScreen extends ConsumerWidget {
   }
 }
 
-class _ReadingView extends StatelessWidget {
+class _ReadingView extends ConsumerStatefulWidget {
   const _ReadingView({
     required this.surah,
     required this.strings,
@@ -70,6 +78,7 @@ class _ReadingView extends StatelessWidget {
     required this.translationFontSize,
     required this.translationInfo,
     required this.onToggleTranslation,
+    this.initialAyah,
   });
 
   final Surah surah;
@@ -78,16 +87,57 @@ class _ReadingView extends StatelessWidget {
   final double translationFontSize;
   final TranslationInfo? translationInfo;
   final VoidCallback onToggleTranslation;
+  final int? initialAyah;
+
+  @override
+  ConsumerState<_ReadingView> createState() => _ReadingViewState();
+}
+
+class _ReadingViewState extends ConsumerState<_ReadingView> {
+  final ScrollController _scrollController = ScrollController();
+  final Map<int, GlobalKey> _ayahKeys = {};
+  bool _didScrollToInitial = false;
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  GlobalKey _keyFor(int ayahNumber) =>
+      _ayahKeys.putIfAbsent(ayahNumber, GlobalKey.new);
 
   void _goToSurah(BuildContext context, int id) {
     if (id < 1 || id > QuranConstants.surahCount) return;
     context.pushReplacement('/surahs/$id');
   }
 
+  Future<void> _scrollToInitialAyah() async {
+    final target = widget.initialAyah;
+    if (target == null || _didScrollToInitial) return;
+    _didScrollToInitial = true;
+    await Future<void>.delayed(const Duration(milliseconds: 50));
+    if (!mounted) return;
+    final ctx = _keyFor(target).currentContext;
+    if (ctx != null) {
+      await Scrollable.ensureVisible(
+        ctx,
+        duration: const Duration(milliseconds: 350),
+        alignment: 0.1,
+        curve: Curves.easeOut,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final surah = widget.surah;
+    final strings = widget.strings;
     final hasPrev = surah.id > 1;
     final hasNext = surah.id < QuranConstants.surahCount;
+    final actions = ref.read(libraryActionsProvider);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToInitialAyah());
 
     return Scaffold(
       backgroundColor: AppColors.mushafCream,
@@ -114,28 +164,28 @@ class _ReadingView extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            tooltip: showTranslation
+            tooltip: widget.showTranslation
                 ? strings.hideTranslation
                 : strings.showTranslation,
-            onPressed: onToggleTranslation,
+            onPressed: widget.onToggleTranslation,
             icon: Icon(
-              showTranslation
+              widget.showTranslation
                   ? Icons.translate
                   : Icons.translate_outlined,
-              color: showTranslation ? AppColors.goldSoft : Colors.white,
+              color: widget.showTranslation ? AppColors.goldSoft : Colors.white,
             ),
           ),
         ],
       ),
       body: Column(
         children: [
-          if (showTranslation && translationInfo != null)
+          if (widget.showTranslation && widget.translationInfo != null)
             Container(
               width: double.infinity,
               color: AppColors.creamDark.withValues(alpha: 0.55),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
               child: Text(
-                translationInfo!.attribution,
+                widget.translationInfo!.attribution,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontFamily: 'SourceSerif4',
@@ -149,11 +199,11 @@ class _ReadingView extends StatelessWidget {
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 720),
                 child: ListView.separated(
+                  controller: _scrollController,
                   padding: const EdgeInsets.fromLTRB(12, 8, 12, 24),
                   itemCount: surah.ayahs.length +
                       (surah.id != 1 && surah.id != 9 ? 1 : 0),
                   separatorBuilder: (context, index) {
-                    // Pas de séparateur avant le premier verset après basmala.
                     final hasBasmala = surah.id != 1 && surah.id != 9;
                     if (hasBasmala && index == 0) {
                       return const SizedBox(height: 4);
@@ -166,10 +216,55 @@ class _ReadingView extends StatelessWidget {
                       return const _BasmalaHeader();
                     }
                     final ayahIndex = hasBasmala ? index - 1 : index;
-                    return AyahTile(
-                      ayah: surah.ayahs[ayahIndex],
-                      showTranslation: showTranslation,
-                      translationFontSize: translationFontSize,
+                    final ayah = surah.ayahs[ayahIndex];
+                    final verseRef = VerseRef(
+                      surahId: surah.id,
+                      ayahNumber: ayah.number,
+                    );
+                    final favAsync = ref.watch(isFavoriteProvider(verseRef));
+
+                    return KeyedSubtree(
+                      key: _keyFor(ayah.number),
+                      child: AyahTile(
+                        ayah: ayah,
+                        showTranslation: widget.showTranslation,
+                        translationFontSize: widget.translationFontSize,
+                        isFavorite: favAsync.asData?.value ?? false,
+                        favoriteTooltip: strings.addFavorite,
+                        bookmarkTooltip: strings.addBookmark,
+                        markPositionTooltip: strings.markPosition,
+                        onToggleFavorite: () async {
+                          final messenger = ScaffoldMessenger.of(context);
+                          await actions.toggleFavorite(verseRef);
+                          final nowFav = await ref.read(
+                            isFavoriteProvider(verseRef).future,
+                          );
+                          messenger.showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                nowFav
+                                    ? strings.favoriteAdded
+                                    : strings.favoriteRemoved,
+                              ),
+                              duration: const Duration(seconds: 1),
+                            ),
+                          );
+                        },
+                        onAddBookmark: () async {
+                          final messenger = ScaffoldMessenger.of(context);
+                          await actions.addBookmark(verseRef);
+                          messenger.showSnackBar(
+                            SnackBar(content: Text(strings.bookmarkAdded)),
+                          );
+                        },
+                        onMarkPosition: () async {
+                          final messenger = ScaffoldMessenger.of(context);
+                          await actions.markReadingPosition(verseRef);
+                          messenger.showSnackBar(
+                            SnackBar(content: Text(strings.positionMarked)),
+                          );
+                        },
+                      ),
                     );
                   },
                 ),

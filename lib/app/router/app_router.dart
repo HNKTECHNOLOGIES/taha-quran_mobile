@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/home/presentation/home_screen.dart';
+import '../../features/library/presentation/screens/favorites_screen.dart';
 import '../../features/reading/presentation/screens/reading_screen.dart';
 import '../../features/settings/presentation/settings_screen.dart';
 import '../../features/surahs/presentation/screens/surah_list_screen.dart';
@@ -38,7 +39,10 @@ GoRouter createAppRouter() {
                     parentNavigatorKey: _rootKey,
                     builder: (context, state) {
                       final id = int.parse(state.pathParameters['id']!);
-                      return ReadingScreen(surahId: id);
+                      final ayah = int.tryParse(
+                        state.uri.queryParameters['ayah'] ?? '',
+                      );
+                      return ReadingScreen(surahId: id, initialAyah: ayah);
                     },
                   ),
                 ],
@@ -49,9 +53,7 @@ GoRouter createAppRouter() {
             routes: [
               GoRoute(
                 path: '/favorites',
-                builder: (context, state) => PlaceholderScreen(
-                  titleBuilder: (s) => s.favorites,
-                ),
+                builder: (context, state) => const FavoritesScreen(),
               ),
             ],
           ),
