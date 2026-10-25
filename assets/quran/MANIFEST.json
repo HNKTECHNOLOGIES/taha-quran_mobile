@@ -9,11 +9,15 @@
   "translations": {
     "fr": {
       "file": "translations_fr.json",
-      "sha256": "ed7dc38f8ce4be6a8a9670f98d01e31e9a42bdd299b49e40645d7ec1aa0187d8",
-      "translator": "Muhammad Hamidullah",
-      "edition_identifier": "fr.hamidullah",
-      "source": "AlQuran Cloud API edition fr.hamidullah (verified published translation)",
-      "license_note": "Translation by Muhammad Hamidullah — redistribute with attribution; do not invent or alter meanings. Arabic text remains under Tanzil license separately.",
+      "sha256": "3939c4aef44358689e7e76ec4475c24648d905842b6bcd3c451743bfdb8241a0",
+      "translator": "al-quran.fr",
+      "edition": "1.1",
+      "edition_date": "2026-10-18",
+      "source": "https://al-quran.fr — open data Édition 1.1 (phrases scellées FR → alignement ayah)",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "al-quran.fr, Données ouvertes, Édition 1.1 — https://al-quran.fr",
+      "license_file": "TRANSLATION_FR_LICENSE.md",
       "surahs": 114,
       "verses": 6236
     }

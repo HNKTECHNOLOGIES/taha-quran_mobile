@@ -10,15 +10,15 @@ class Ayah {
   final int number;
   final String textAr;
 
-  /// Traduction française (Hamidullah), séparée du texte arabe.
+  /// Traduction FR locale si disponible ; `null` si absente (jamais inventée).
   final String? textFr;
 
-  Ayah copyWith({String? textFr}) {
+  Ayah copyWith({String? textFr, bool clearTextFr = false}) {
     return Ayah(
       surahId: surahId,
       number: number,
       textAr: textAr,
-      textFr: textFr ?? this.textFr,
+      textFr: clearTextFr ? null : (textFr ?? this.textFr),
     );
   }
 }

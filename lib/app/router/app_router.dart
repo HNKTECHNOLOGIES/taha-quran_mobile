@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../features/home/presentation/home_screen.dart';
 import '../../features/reading/presentation/screens/reading_screen.dart';
+import '../../features/settings/presentation/settings_screen.dart';
 import '../../features/surahs/presentation/screens/surah_list_screen.dart';
 import '../../shared/widgets/main_shell.dart';
 
@@ -68,9 +69,7 @@ GoRouter createAppRouter() {
             routes: [
               GoRoute(
                 path: '/settings',
-                builder: (context, state) => PlaceholderScreen(
-                  titleBuilder: (s) => s.settings,
-                ),
+                builder: (context, state) => const SettingsScreen(),
               ),
             ],
           ),

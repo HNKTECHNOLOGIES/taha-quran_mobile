@@ -3,16 +3,23 @@ import 'package:quran_mobile/core/constants/quran_constants.dart';
 import 'package:quran_mobile/core/database/app_database.dart';
 import 'package:quran_mobile/features/surahs/data/datasources/quran_asset_datasource.dart';
 import 'package:quran_mobile/features/surahs/data/repositories/quran_repository_impl.dart';
+import 'package:quran_mobile/features/translations/data/datasources/translation_asset_datasource.dart';
+import 'package:quran_mobile/features/translations/data/repositories/translation_repository_impl.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   late QuranRepositoryImpl repository;
+  late TranslationRepositoryImpl translations;
 
   setUp(() async {
+    translations = TranslationRepositoryImpl(
+      assetDataSource: TranslationAssetDataSource(),
+    );
     repository = QuranRepositoryImpl(
       database: AppDatabase(),
       assetDataSource: QuranAssetDataSource(),
+      translationRepository: translations,
     );
     await repository.initialize();
   });
@@ -51,31 +58,44 @@ void main() {
     }
   });
 
-  test('UC03 — traduction FR Hamidullah sous chaque verset (asset local)', () async {
+  test('UC03 — correspondance AR/FR locale (al-quran.fr CC BY 4.0)', () async {
+    expect(translations.hasFrenchTranslation, isTrue);
+    expect(translations.frenchInfo?.translator, 'al-quran.fr');
+    expect(translations.frenchInfo?.license, contains('CC BY'));
+
     final fatiha = await repository.getSurah(1);
     expect(fatiha.ayahs.first.textFr, isNotNull);
-    expect(
-      fatiha.ayahs.first.textFr,
-      contains('Tout Miséricordieux'),
-    );
+    expect(fatiha.ayahs.first.textFr, contains('Dieu'));
+    // Texte arabe non modifié / non remplacé
+    expect(fatiha.ayahs.first.textAr, isNot(contains('Dieu')));
+
     for (final ayah in fatiha.ayahs) {
       expect(ayah.textFr?.trim(), isNotEmpty);
     }
-
-    // Le texte arabe n’est pas altéré par la traduction.
-    expect(fatiha.ayahs.first.textAr, isNot(contains('Allah')));
   });
 
-  test('intégrité — total 6236 versets arabes + FR', () async {
+  test('intégrité — 6236 versets arabes + FR alignés, hors ligne', () async {
     final surahs = await repository.getSurahs();
     var totalAr = 0;
     var totalFr = 0;
     for (final s in surahs) {
       final detail = await repository.getSurah(s.id);
+      expect(detail.ayahs.length, s.versesCount);
       totalAr += detail.ayahs.length;
-      totalFr += detail.ayahs.where((a) => (a.textFr ?? '').isNotEmpty).length;
+      for (final a in detail.ayahs) {
+        expect(a.textAr.trim(), isNotEmpty);
+        if ((a.textFr ?? '').isNotEmpty) totalFr++;
+      }
     }
     expect(totalAr, QuranConstants.verseCount);
     expect(totalFr, QuranConstants.verseCount);
+  });
+
+  test('traduction absente → null, jamais inventée', () async {
+    final missing = await translations.getFrenchTranslation(
+      surahId: 1,
+      ayahNumber: 999,
+    );
+    expect(missing, isNull);
   });
 }

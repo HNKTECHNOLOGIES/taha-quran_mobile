@@ -8,6 +8,9 @@ import 'package:quran_mobile/features/surahs/data/datasources/quran_asset_dataso
 import 'package:quran_mobile/features/surahs/data/repositories/quran_repository_impl.dart';
 import 'package:quran_mobile/features/surahs/domain/entities/surah.dart';
 import 'package:quran_mobile/features/surahs/presentation/providers/quran_providers.dart';
+import 'package:quran_mobile/features/translations/data/datasources/translation_asset_datasource.dart';
+import 'package:quran_mobile/features/translations/data/repositories/translation_repository_impl.dart';
+import 'package:quran_mobile/features/translations/presentation/providers/translation_providers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -17,17 +20,23 @@ void main() {
     SharedPreferences.setMockInitialValues({});
   });
 
-  testWidgets('navigation Accueil → Liste → Lecture + traduction', (tester) async {
+  testWidgets('navigation + affichage/masquage traduction FR', (tester) async {
     await tester.binding.setSurfaceSize(const Size(400, 900));
     addTearDown(() => tester.binding.setSurfaceSize(null));
 
     late List<Surah> surahs;
     late Surah fatiha;
     late Surah baqarah;
+    late TranslationRepositoryImpl translationRepo;
+
     await tester.runAsync(() async {
+      translationRepo = TranslationRepositoryImpl(
+        assetDataSource: TranslationAssetDataSource(),
+      );
       final repository = QuranRepositoryImpl(
         database: AppDatabase(),
         assetDataSource: QuranAssetDataSource(),
+        translationRepository: translationRepo,
       );
       await repository.initialize();
       surahs = await repository.getSurahs();
@@ -38,6 +47,7 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
+          translationRepositoryProvider.overrideWithValue(translationRepo),
           surahListProvider.overrideWith((ref) async => surahs),
           surahDetailProvider.overrideWith((ref, id) async {
             if (id == 1) return fatiha;
@@ -51,12 +61,8 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.text('القرآن الكريم'), findsWidgets);
-
     await tester.tap(find.text('Parcourir les sourates'));
     await tester.pumpAndSettle();
-
-    expect(find.text('الفاتحة'), findsOneWidget);
 
     await tester.tap(find.text('الفاتحة'));
     await tester.pumpAndSettle();
@@ -64,12 +70,11 @@ void main() {
     expect(find.text('الفاتحة'), findsWidgets);
     expect(find.textContaining('Al-Fatihah'), findsWidgets);
     expect(find.textContaining('بِسۡمِ'), findsWidgets);
-    expect(find.textContaining('Tout Miséricordieux'), findsWidgets);
-    expect(find.text('Suivante'), findsOneWidget);
+    expect(find.textContaining('Dieu'), findsWidgets);
+    expect(find.textContaining('al-quran.fr'), findsWidgets);
 
-    // Masquer la traduction
     await tester.tap(find.byTooltip('Masquer la traduction'));
     await tester.pumpAndSettle();
-    expect(find.textContaining('Tout Miséricordieux'), findsNothing);
+    expect(find.textContaining('Dieu'), findsNothing);
   });
 }

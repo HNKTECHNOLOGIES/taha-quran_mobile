@@ -1,0 +1,139 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../app/providers/locale_provider.dart';
+import '../../../app/providers/reading_settings_provider.dart';
+import '../../../core/theme/app_colors.dart';
+import '../../translations/presentation/providers/translation_providers.dart';
+
+class SettingsScreen extends ConsumerWidget {
+  const SettingsScreen({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final s = ref.watch(localeProvider);
+    final settings = ref.watch(readingSettingsProvider);
+    final info = ref.watch(frenchTranslationInfoProvider).asData?.value;
+
+    return Scaffold(
+      backgroundColor: AppColors.mushafCream,
+      appBar: AppBar(
+        title: Text(s.settings),
+        backgroundColor: AppColors.emerald,
+        foregroundColor: Colors.white,
+      ),
+      body: ListView(
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+        children: [
+          _SectionTitle(s.translationSection),
+          SwitchListTile(
+            value: settings.showFrenchTranslation,
+            activeThumbColor: AppColors.gold,
+            activeTrackColor: AppColors.emerald.withValues(alpha: 0.45),
+            title: Text(s.showTranslation),
+            subtitle: Text(
+              settings.showFrenchTranslation
+                  ? s.translationVisible
+                  : s.translationHidden,
+            ),
+            onChanged: (v) => ref
+                .read(readingSettingsProvider.notifier)
+                .setShowFrenchTranslation(v),
+          ),
+          ListTile(
+            title: Text(s.translationFontSize),
+            subtitle: Slider(
+              value: settings.translationFontSize,
+              min: 12,
+              max: 28,
+              divisions: 16,
+              activeColor: AppColors.emerald,
+              label: settings.translationFontSize.round().toString(),
+              onChanged: (v) => ref
+                  .read(readingSettingsProvider.notifier)
+                  .setTranslationFontSize(v),
+            ),
+            trailing: Text(
+              '${settings.translationFontSize.round()}',
+              style: const TextStyle(
+                fontFamily: 'SourceSerif4',
+                fontWeight: FontWeight.w600,
+                color: AppColors.emeraldDark,
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+          _SectionTitle(s.aboutTranslation),
+          Card(
+            color: Colors.white,
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(14),
+              side: BorderSide(color: AppColors.creamDark),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: info == null
+                  ? Text(s.noTranslationInstalled)
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          info.translator,
+                          style: const TextStyle(
+                            fontFamily: 'SourceSerif4',
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.emeraldDark,
+                          ),
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          '${s.editionLabel}: ${info.edition}',
+                          style: const TextStyle(fontFamily: 'SourceSerif4'),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          '${s.licenseLabel}: ${info.license}',
+                          style: const TextStyle(fontFamily: 'SourceSerif4'),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          info.attribution,
+                          style: TextStyle(
+                            fontFamily: 'SourceSerif4',
+                            fontSize: 13,
+                            height: 1.4,
+                            color: AppColors.inkMuted,
+                          ),
+                        ),
+                      ],
+                    ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SectionTitle extends StatelessWidget {
+  const _SectionTitle(this.text);
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8, top: 4),
+      child: Text(
+        text,
+        style: const TextStyle(
+          fontSize: 13,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 0.4,
+          color: AppColors.emerald,
+        ),
+      ),
+    );
+  }
+}

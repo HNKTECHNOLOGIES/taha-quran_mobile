@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/database/app_database.dart';
+import '../../../translations/presentation/providers/translation_providers.dart';
 import '../../data/datasources/quran_asset_datasource.dart';
 import '../../data/repositories/quran_repository_impl.dart';
 import '../../domain/entities/surah.dart';
@@ -22,6 +23,7 @@ final quranRepositoryProvider = Provider<QuranRepository>((ref) {
   return QuranRepositoryImpl(
     database: ref.watch(appDatabaseProvider),
     assetDataSource: ref.watch(quranAssetDataSourceProvider),
+    translationRepository: ref.watch(translationRepositoryProvider),
   );
 });
 

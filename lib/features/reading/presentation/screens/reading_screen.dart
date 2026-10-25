@@ -11,6 +11,8 @@ import '../../../../shared/widgets/error_view.dart';
 import '../../../../shared/widgets/loading_view.dart';
 import '../../../surahs/domain/entities/surah.dart';
 import '../../../surahs/presentation/providers/quran_providers.dart';
+import '../../../translations/domain/entities/ayah_translation.dart';
+import '../../../translations/presentation/providers/translation_providers.dart';
 import '../widgets/ayah_tile.dart';
 
 class ReadingScreen extends ConsumerWidget {
@@ -23,6 +25,8 @@ class ReadingScreen extends ConsumerWidget {
     final s = ref.watch(localeProvider);
     final settings = ref.watch(readingSettingsProvider);
     final asyncSurah = ref.watch(surahDetailProvider(surahId));
+    final translationInfo =
+        ref.watch(frenchTranslationInfoProvider).asData?.value;
 
     return asyncSurah.when(
       loading: () => Scaffold(
@@ -49,6 +53,8 @@ class ReadingScreen extends ConsumerWidget {
         surah: surah,
         strings: s,
         showTranslation: settings.showFrenchTranslation,
+        translationFontSize: settings.translationFontSize,
+        translationInfo: translationInfo,
         onToggleTranslation: () =>
             ref.read(readingSettingsProvider.notifier).toggleFrenchTranslation(),
       ),
@@ -61,12 +67,16 @@ class _ReadingView extends StatelessWidget {
     required this.surah,
     required this.strings,
     required this.showTranslation,
+    required this.translationFontSize,
+    required this.translationInfo,
     required this.onToggleTranslation,
   });
 
   final Surah surah;
   final AppStrings strings;
   final bool showTranslation;
+  final double translationFontSize;
+  final TranslationInfo? translationInfo;
   final VoidCallback onToggleTranslation;
 
   void _goToSurah(BuildContext context, int id) {
@@ -119,16 +129,17 @@ class _ReadingView extends StatelessWidget {
       ),
       body: Column(
         children: [
-          if (showTranslation)
+          if (showTranslation && translationInfo != null)
             Container(
               width: double.infinity,
               color: AppColors.creamDark.withValues(alpha: 0.55),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
               child: Text(
-                strings.translationCredit,
+                translationInfo!.attribution,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 12,
+                  fontFamily: 'SourceSerif4',
+                  fontSize: 11,
                   color: AppColors.inkMuted.withValues(alpha: 0.9),
                 ),
               ),
@@ -158,6 +169,7 @@ class _ReadingView extends StatelessWidget {
                     return AyahTile(
                       ayah: surah.ayahs[ayahIndex],
                       showTranslation: showTranslation,
+                      translationFontSize: translationFontSize,
                     );
                   },
                 ),

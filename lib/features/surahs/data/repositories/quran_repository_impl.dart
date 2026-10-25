@@ -1,4 +1,5 @@
 import '../../../../core/database/app_database.dart';
+import '../../../translations/domain/repositories/translation_repository.dart';
 import '../../domain/entities/ayah.dart';
 import '../../domain/entities/surah.dart';
 import '../../domain/repositories/quran_repository.dart';
@@ -10,16 +11,15 @@ class QuranRepositoryImpl implements QuranRepository {
   QuranRepositoryImpl({
     required this.database,
     required this.assetDataSource,
+    required this.translationRepository,
   });
 
   final AppDatabase database;
   final QuranAssetDataSource assetDataSource;
+  final TranslationRepository translationRepository;
 
   QuranLocalDataSource? _local;
   List<SurahModel>? _memoryCache;
-
-  /// Traductions FR séparées du texte arabe (jamais mélangées dans les assets AR).
-  Map<int, Map<int, String>> _frenchBySurah = {};
   bool _initialized = false;
 
   @override
@@ -27,7 +27,7 @@ class QuranRepositoryImpl implements QuranRepository {
     if (_initialized) return;
 
     final surahs = await assetDataSource.loadArabicQuran();
-    _frenchBySurah = await assetDataSource.loadFrenchTranslations();
+    await translationRepository.initialize();
 
     final db = await database.open();
 
@@ -47,10 +47,18 @@ class QuranRepositoryImpl implements QuranRepository {
     if (!_initialized) await initialize();
   }
 
-  List<Ayah> _withFrench(int surahId, List<Ayah> ayahs) {
-    final fr = _frenchBySurah[surahId] ?? const {};
+  Future<List<Ayah>> _withFrench(int surahId, List<Ayah> ayahs) async {
+    final fr = await translationRepository.getFrenchForSurah(surahId);
     return ayahs
-        .map((a) => a.copyWith(textFr: fr[a.number]))
+        .map(
+          (a) => Ayah(
+            surahId: a.surahId,
+            number: a.number,
+            textAr: a.textAr,
+            // Absente → null, jamais de texte inventé.
+            textFr: fr[a.number]?.text,
+          ),
+        )
         .toList(growable: false);
   }
 
@@ -93,7 +101,7 @@ class QuranRepositoryImpl implements QuranRepository {
     } else {
       base = _memoryCache!.firstWhere((s) => s.id == surahId);
     }
-    return base.copyWith(ayahs: _withFrench(surahId, base.ayahs));
+    return base.copyWith(ayahs: await _withFrench(surahId, base.ayahs));
   }
 
   @override

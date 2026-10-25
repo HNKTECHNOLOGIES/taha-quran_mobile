@@ -85,8 +85,37 @@ class AppStrings {
       language == AppLanguage.arabic ? 'التالية' : 'Suivante';
 
   String get translationCredit => language == AppLanguage.arabic
-      ? 'ترجمة محمد حميد الله'
-      : 'Traduction Muhammad Hamidullah';
+      ? 'ترجمة al-quran.fr'
+      : 'Traduction al-quran.fr';
+
+  String get translationSection =>
+      language == AppLanguage.arabic ? 'الترجمة' : 'Traduction';
+
+  String get translationVisible => language == AppLanguage.arabic
+      ? 'الترجمة ظاهرة تحت الآيات'
+      : 'Traduction visible sous les versets';
+
+  String get translationHidden => language == AppLanguage.arabic
+      ? 'الترجمة مخفية'
+      : 'Traduction masquée';
+
+  String get translationFontSize => language == AppLanguage.arabic
+      ? 'حجم نص الترجمة'
+      : 'Taille de la traduction';
+
+  String get aboutTranslation => language == AppLanguage.arabic
+      ? 'حول الترجمة'
+      : 'À propos de la traduction';
+
+  String get editionLabel =>
+      language == AppLanguage.arabic ? 'الطبعة' : 'Édition';
+
+  String get licenseLabel =>
+      language == AppLanguage.arabic ? 'الرخصة' : 'Licence';
+
+  String get noTranslationInstalled => language == AppLanguage.arabic
+      ? 'لا توجد ترجمة محلية مثبتة'
+      : 'Aucune traduction locale installée';
 
   String revelationLabel(String type) {
     final t = type.toLowerCase();

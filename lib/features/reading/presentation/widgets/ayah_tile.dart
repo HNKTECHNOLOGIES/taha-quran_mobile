@@ -4,23 +4,27 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/arabic_numerals.dart';
 import '../../../surahs/domain/entities/ayah.dart';
 
-/// Verset : médaillon + arabe RTL + traduction FR optionnelle.
+/// Verset : médaillon + arabe RTL + traduction FR optionnelle (LTR).
 class AyahTile extends StatelessWidget {
   const AyahTile({
     super.key,
     required this.ayah,
     this.showTranslation = true,
     this.arabicFontSize = 30,
+    this.translationFontSize = 16,
   });
 
   final Ayah ayah;
   final bool showTranslation;
   final double arabicFontSize;
+  final double translationFontSize;
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final arabicColor = isDark ? Colors.white : AppColors.ink;
+    final hasTranslation =
+        showTranslation && (ayah.textFr?.trim().isNotEmpty ?? false);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 14),
@@ -48,9 +52,7 @@ class AyahTile extends StatelessWidget {
               ),
             ],
           ),
-          if (showTranslation &&
-              ayah.textFr != null &&
-              ayah.textFr!.trim().isNotEmpty) ...[
+          if (hasTranslation) ...[
             const SizedBox(height: 10),
             Padding(
               padding: const EdgeInsetsDirectional.only(start: 44),
@@ -59,8 +61,8 @@ class AyahTile extends StatelessWidget {
                 textDirection: TextDirection.ltr,
                 textAlign: TextAlign.left,
                 style: TextStyle(
-                  fontFamily: 'Amiri',
-                  fontSize: 16,
+                  fontFamily: 'SourceSerif4',
+                  fontSize: translationFontSize,
                   height: 1.45,
                   color: isDark
                       ? Colors.white70
