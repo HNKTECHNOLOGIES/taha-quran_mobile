@@ -119,14 +119,13 @@ class _ReadingViewState extends ConsumerState<_ReadingView> {
     await Future<void>.delayed(const Duration(milliseconds: 50));
     if (!mounted) return;
     final ctx = _keyFor(target).currentContext;
-    if (ctx != null) {
-      await Scrollable.ensureVisible(
-        ctx,
-        duration: const Duration(milliseconds: 350),
-        alignment: 0.1,
-        curve: Curves.easeOut,
-      );
-    }
+    if (ctx == null || !ctx.mounted) return;
+    await Scrollable.ensureVisible(
+      ctx,
+      duration: const Duration(milliseconds: 350),
+      alignment: 0.1,
+      curve: Curves.easeOut,
+    );
   }
 
   @override
