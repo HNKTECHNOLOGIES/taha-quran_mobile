@@ -20,7 +20,8 @@ void main() {
     await tester.pump(const Duration(milliseconds: 100));
 
     expect(find.text('السلام عليكم'), findsOneWidget);
-    expect(find.text('القرآن الكريم'), findsWidgets);
+    expect(find.text('TAHA — طه'), findsOneWidget);
+    expect(find.text('TAHA'), findsWidgets);
     expect(find.text('Lire le Coran'), findsOneWidget);
     expect(find.text('Écouter une récitation'), findsOneWidget);
     expect(find.text('Mes favoris'), findsOneWidget);

@@ -56,12 +56,16 @@ class HomeScreen extends ConsumerWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          'القرآن الكريم',
-                          textDirection: TextDirection.rtl,
+                          s.appName,
+                          textDirection: s.isRtl
+                              ? TextDirection.rtl
+                              : TextDirection.ltr,
                           style: TextStyle(
-                            fontFamily: 'AmiriQuran',
+                            fontFamily: s.isRtl ? 'AmiriQuran' : 'SourceSerif4',
                             fontSize: width < 360 ? 22 : 26,
-                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.goldSoft,
+                            letterSpacing: s.isRtl ? 0 : 1.2,
                           ),
                         ),
                       ),
@@ -82,14 +86,15 @@ class HomeScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: 28),
                   Text(
-                    'السلام عليكم',
+                    s.appBrand,
                     textAlign: TextAlign.center,
-                    textDirection: TextDirection.rtl,
                     style: TextStyle(
-                      fontFamily: 'AmiriQuran',
-                      fontSize: width < 360 ? 36 : 44,
-                      height: 1.35,
+                      fontFamily: 'SourceSerif4',
+                      fontSize: width < 360 ? 34 : 42,
+                      fontWeight: FontWeight.w700,
+                      height: 1.25,
                       color: Colors.white,
+                      letterSpacing: 1.0,
                       shadows: const [
                         Shadow(
                           color: Colors.black26,
@@ -97,6 +102,18 @@ class HomeScreen extends ConsumerWidget {
                           offset: Offset(0, 2),
                         ),
                       ],
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    'السلام عليكم',
+                    textAlign: TextAlign.center,
+                    textDirection: TextDirection.rtl,
+                    style: TextStyle(
+                      fontFamily: 'AmiriQuran',
+                      fontSize: width < 360 ? 26 : 30,
+                      height: 1.35,
+                      color: Colors.white.withValues(alpha: 0.92),
                     ),
                   ),
                   const SizedBox(height: 8),

@@ -1,6 +1,8 @@
 # quran_mobile
 
-Application Flutter (Android / iOS) pour lire le **Saint Coran** (القرآن الكريم) hors connexion.
+**TAHA — طه** : application Flutter (Android / iOS) pour lire le **Saint Coran** hors connexion.
+
+Nom technique du projet : `quran_mobile` (inchangé).
 
 ## Fonctionnalités (livrées)
 

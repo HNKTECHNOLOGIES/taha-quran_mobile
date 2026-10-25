@@ -14,8 +14,12 @@ class AppStrings {
   Locale get locale =>
       language == AppLanguage.arabic ? const Locale('ar') : const Locale('fr');
 
+  /// Nom affiché (MaterialApp, titres).
   String get appName =>
-      language == AppLanguage.arabic ? 'القرآن الكريم' : 'Le Saint Coran';
+      language == AppLanguage.arabic ? 'طه' : 'TAHA';
+
+  /// Marque bilingue pour l’accueil (ne remplace pas le texte coranique).
+  String get appBrand => 'TAHA — طه';
 
   String get home => language == AppLanguage.arabic ? 'الرئيسية' : 'Accueil';
   String get surahs =>
@@ -28,8 +32,7 @@ class AppStrings {
   String get settings =>
       language == AppLanguage.arabic ? 'الإعدادات' : 'Paramètres';
 
-  String get welcomeTitle =>
-      language == AppLanguage.arabic ? 'القرآن الكريم' : 'Le Saint Coran';
+  String get welcomeTitle => appBrand;
 
   String get welcomeSubtitle => language == AppLanguage.arabic
       ? 'اقرأ القرآن دون اتصال'
