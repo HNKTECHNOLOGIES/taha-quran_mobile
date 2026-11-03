@@ -44,6 +44,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/quran/
+    - assets/quran/tafsir/ibn_kathir_ar/
     - assets/branding/
   fonts:
     - family: AmiriQuran

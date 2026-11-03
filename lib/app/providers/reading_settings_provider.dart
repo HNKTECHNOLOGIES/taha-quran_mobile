@@ -3,24 +3,29 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 const _kShowTranslation = 'reading_show_translation_fr';
 const _kTranslationFontSize = 'reading_translation_font_size';
+const _kTafsirFontSize = 'reading_tafsir_font_size';
 
 class ReadingSettings {
   const ReadingSettings({
     this.showFrenchTranslation = true,
     this.translationFontSize = 16,
+    this.tafsirFontSize = 17,
   });
 
   final bool showFrenchTranslation;
   final double translationFontSize;
+  final double tafsirFontSize;
 
   ReadingSettings copyWith({
     bool? showFrenchTranslation,
     double? translationFontSize,
+    double? tafsirFontSize,
   }) {
     return ReadingSettings(
       showFrenchTranslation:
           showFrenchTranslation ?? this.showFrenchTranslation,
       translationFontSize: translationFontSize ?? this.translationFontSize,
+      tafsirFontSize: tafsirFontSize ?? this.tafsirFontSize,
     );
   }
 }
@@ -42,9 +47,11 @@ class ReadingSettingsNotifier extends Notifier<ReadingSettings> {
       final prefs = await SharedPreferences.getInstance();
       final show = prefs.getBool(_kShowTranslation) ?? true;
       final size = prefs.getDouble(_kTranslationFontSize) ?? 16;
+      final tafsirSize = prefs.getDouble(_kTafsirFontSize) ?? 17;
       state = ReadingSettings(
         showFrenchTranslation: show,
         translationFontSize: size.clamp(12, 28),
+        tafsirFontSize: tafsirSize.clamp(14, 32),
       );
     } catch (_) {}
   }
@@ -72,6 +79,15 @@ class ReadingSettingsNotifier extends Notifier<ReadingSettings> {
     try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setDouble(_kTranslationFontSize, size);
+    } catch (_) {}
+  }
+
+  Future<void> setTafsirFontSize(double value) async {
+    final size = value.clamp(14, 32).toDouble();
+    state = state.copyWith(tafsirFontSize: size);
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setDouble(_kTafsirFontSize, size);
     } catch (_) {}
   }
 }

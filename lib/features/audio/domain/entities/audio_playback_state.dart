@@ -51,11 +51,14 @@ class AudioPlaybackState {
     String? errorMessage,
     bool clearError = false,
     bool clearSurah = false,
+    bool clearAyah = false,
   }) {
     return AudioPlaybackState(
       status: status ?? this.status,
       surahId: clearSurah ? null : (surahId ?? this.surahId),
-      ayahNumber: clearSurah ? null : (ayahNumber ?? this.ayahNumber),
+      ayahNumber: (clearSurah || clearAyah)
+          ? null
+          : (ayahNumber ?? this.ayahNumber),
       verseCount: clearSurah ? null : (verseCount ?? this.verseCount),
       reciter: reciter ?? this.reciter,
       position: position ?? this.position,

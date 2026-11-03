@@ -30,13 +30,18 @@ class CompactAudioPlayer extends ConsumerWidget {
     final controller = ref.read(audioControllerProvider.notifier);
     final isThisSurah = audio.surahId == surahId;
     final reciter = isThisSurah ? audio.reciter : selectedReciter;
-    final ayahLabel = isThisSurah && audio.ayahNumber != null
-        ? '${strings.verse} ${audio.ayahNumber}'
-        : strings.audioReady;
+    final ayahLabel = !reciter.supportsVerseSync
+        ? (isThisSurah && audio.isActive
+            ? strings.fullSurahAudio
+            : strings.audioReady)
+        : (isThisSurah && audio.ayahNumber != null
+            ? '${strings.verse} ${audio.ayahNumber}'
+            : strings.audioReady);
     final progress = isThisSurah ? audio.progress : 0.0;
     final busy = audio.status == AudioStatus.loading && isThisSurah;
     final playing = audio.status == AudioStatus.playing && isThisSurah;
-    final canSkip = isThisSurah &&
+    final canSkip = reciter.supportsVerseSync &&
+        isThisSurah &&
         (audio.isActive || audio.status == AudioStatus.completed);
 
     return Material(
@@ -96,7 +101,7 @@ class CompactAudioPlayer extends ConsumerWidget {
                         const SizedBox(width: 8),
                         Flexible(
                           child: Text(
-                            ReciterCatalog.attribution,
+                            reciter.sourceAttribution,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.end,

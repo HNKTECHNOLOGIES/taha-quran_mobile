@@ -69,16 +69,37 @@ void main() {
   });
 
   group('ReciterCatalog', () {
-    test('contient les 3 récitateurs demandés', () {
-      expect(ReciterCatalog.all.length, 3);
+    test('contient les récitateurs demandés dont Badr Touarique', () {
+      expect(ReciterCatalog.all.length, 4);
       expect(
         ReciterCatalog.all.map((r) => r.nameEn).toList(),
         containsAll([
           'Mishary Rashid Alafasy',
           'Abdul Basit Abdus Samad',
           'Maher Al-Muaiqly',
+          'Badr Touarique',
         ]),
       );
+      expect(ReciterCatalog.badrTouarique.supportsVerseSync, isFalse);
+    });
+
+    test('URL sourate complète Badr Touarique (mp3quran)', () {
+      const builder = QuranAudioUrlBuilder();
+      final uri = builder.surahUri(
+        reciter: ReciterCatalog.badrTouarique,
+        surahId: 1,
+      );
+      expect(
+        uri.toString(),
+        'https://cdn.mp3quran.net/audio/badr-turki/r1/001.mp3',
+      );
+      final playlist = builder.surahPlaylist(
+        reciter: ReciterCatalog.badrTouarique,
+        surahId: 112,
+        verseCount: 4,
+      );
+      expect(playlist, hasLength(1));
+      expect(playlist.single.pathSegments.last, '112.mp3');
     });
   });
 

@@ -200,6 +200,10 @@ class AppStrings {
       ? 'جاهز للتلاوة'
       : 'Prêt à réciter';
 
+  String get fullSurahAudio => language == AppLanguage.arabic
+      ? 'سورة كاملة (بدون مزامنة الآيات)'
+      : 'Sourate complète (sans sync. versets)';
+
   String get audioError => language == AppLanguage.arabic
       ? 'تعذر تحميل التلاوة (الشبكة؟)'
       : 'Impossible de charger l’audio (réseau ?)';
@@ -224,6 +228,30 @@ class AppStrings {
 
   String get recitationPlayer =>
       language == AppLanguage.arabic ? 'مشغّل التلاوة' : 'Lecteur de récitation';
+
+  String get ibnKathirTitle =>
+      language == AppLanguage.arabic ? 'تفسير ابن كثير' : 'تفسير ابن كثير';
+
+  String get tafsirUnavailable => language == AppLanguage.arabic
+      ? 'لا يتوفر تعليق لهذا الموضع في المصدر المحلي'
+      : 'Aucun commentaire disponible pour ce verset dans la source locale';
+
+  String get tafsirVerseRef =>
+      language == AppLanguage.arabic ? 'المرجع' : 'Référence';
+
+  String get tafsirMultiAyahNote => language == AppLanguage.arabic
+      ? 'تعليق يشمل عدة آيات'
+      : 'commentaire portant sur plusieurs versets';
+
+  String get tafsirSection =>
+      language == AppLanguage.arabic ? 'التفسير' : 'Tafsir';
+
+  String get tafsirFontSize => language == AppLanguage.arabic
+      ? 'حجم نص التفسير'
+      : 'Taille du tafsir';
+
+  String get aboutTafsir =>
+      language == AppLanguage.arabic ? 'حول التفسير' : 'À propos du tafsir';
 
   String revelationLabel(String type) {
     final t = type.toLowerCase();

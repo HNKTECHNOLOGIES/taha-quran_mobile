@@ -90,6 +90,8 @@ class AudioController extends Notifier<AudioPlaybackState> {
     );
     _subs.add(
       service.currentIndexStream.listen((index) {
+        // Pas de sync verset pour les fichiers « sourate complète ».
+        if (!state.reciter.supportsVerseSync) return;
         if (index == null || state.verseCount == null) return;
         final ayah = index + 1;
         state = state.copyWith(ayahNumber: ayah);
@@ -145,12 +147,14 @@ class AudioController extends Notifier<AudioPlaybackState> {
     state = state.copyWith(
       status: AudioStatus.loading,
       surahId: surahId,
-      ayahNumber: startAyah.clamp(1, verseCount),
+      ayahNumber:
+          chosen.supportsVerseSync ? startAyah.clamp(1, verseCount) : null,
       verseCount: verseCount,
       reciter: chosen,
       position: Duration.zero,
       duration: Duration.zero,
       clearError: true,
+      clearAyah: !chosen.supportsVerseSync,
     );
 
     try {
@@ -240,11 +244,19 @@ class AudioController extends Notifier<AudioPlaybackState> {
     final wasPlaying = state.status == AudioStatus.playing;
 
     if (surahId == null || verseCount == null) {
-      state = state.copyWith(reciter: reciter);
+      state = state.copyWith(
+        reciter: reciter,
+        clearAyah: !reciter.supportsVerseSync,
+      );
       return;
     }
 
-    state = state.copyWith(reciter: reciter, status: AudioStatus.loading);
+    state = state.copyWith(
+      reciter: reciter,
+      status: AudioStatus.loading,
+      ayahNumber: reciter.supportsVerseSync ? ayah : null,
+      clearAyah: !reciter.supportsVerseSync,
+    );
     try {
       await _service.loadSurah(
         reciter: reciter,

@@ -65,6 +65,7 @@ class ReadingScreen extends ConsumerWidget {
         initialAyah: initialAyah,
         showTranslation: settings.showFrenchTranslation,
         translationFontSize: settings.translationFontSize,
+        tafsirFontSize: settings.tafsirFontSize,
         translationInfo: translationInfo,
         onToggleTranslation: () =>
             ref.read(readingSettingsProvider.notifier).toggleFrenchTranslation(),
@@ -79,6 +80,7 @@ class _ReadingView extends ConsumerStatefulWidget {
     required this.strings,
     required this.showTranslation,
     required this.translationFontSize,
+    required this.tafsirFontSize,
     required this.translationInfo,
     required this.onToggleTranslation,
     this.initialAyah,
@@ -88,6 +90,7 @@ class _ReadingView extends ConsumerStatefulWidget {
   final AppStrings strings;
   final bool showTranslation;
   final double translationFontSize;
+  final double tafsirFontSize;
   final TranslationInfo? translationInfo;
   final VoidCallback onToggleTranslation;
   final int? initialAyah;
@@ -318,6 +321,8 @@ class _ReadingViewState extends ConsumerState<_ReadingView> {
                         ayah: ayah,
                         showTranslation: widget.showTranslation,
                         translationFontSize: widget.translationFontSize,
+                        tafsirFontSize: widget.tafsirFontSize,
+                        strings: strings,
                         isFavorite: favAsync.asData?.value ?? false,
                         isHighlighted: highlighted,
                         favoriteTooltip: strings.addFavorite,

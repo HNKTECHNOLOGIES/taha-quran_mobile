@@ -21,5 +21,18 @@
       "surahs": 114,
       "verses": 6236
     }
+  },
+  "tafsirs": {
+    "ibn_kathir_ar": {
+      "dir": "tafsir/ibn_kathir_ar",
+      "manifest": "tafsir/ibn_kathir_ar/MANIFEST.json",
+      "license_file": "tafsir/ibn_kathir_ar/LICENSE.md",
+      "work_ar": "تفسير القرآن العظيم",
+      "commentator_ar": "ابن كثير",
+      "license": "public-domain",
+      "source": "spa5k/tafsir_api ar-tafsir-ibn-kathir (verbatim)",
+      "surahs": 114,
+      "ayahs_covered": 6236
+    }
   }
 }

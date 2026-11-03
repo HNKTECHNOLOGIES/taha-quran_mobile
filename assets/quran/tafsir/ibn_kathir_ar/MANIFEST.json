@@ -1,0 +1,822 @@
+{
+  "id": "ibn_kathir_ar",
+  "work_ar": "تفسير القرآن العظيم",
+  "work_en": "Tafsir al-Qur'an al-Azim",
+  "commentator_ar": "ابن كثير",
+  "commentator_en": "Ibn Kathir (Ismail ibn Umar, d. 774/1373)",
+  "language": "ar",
+  "license": "public-domain",
+  "license_note": "Classical work public domain (author died 1373). Digital packaging from spa5k/tafsir_api (MIT). Text is verbatim; never AI-generated.",
+  "source_repo": "https://github.com/spa5k/tafsir_api",
+  "source_edition": "ar-tafsir-ibn-kathir",
+  "source_commit": "eb82bb6294efe30ad5c135c03b1864afaa70e855",
+  "upstream_dataset": "quranlab/quran-tafsir config tafsir-ibnkathir-ar (nassimjp mirror)",
+  "attribution": "تفسير القرآن العظيم — ابن كثير. مصدر رقمي: spa5k/tafsir_api (نص حرفي، ملكية عامة).",
+  "imported_at": "2026-11-03T11:53:13Z",
+  "surahs": 114,
+  "ayah_entries_source": 6236,
+  "files": [
+    {
+      "file": "001.json",
+      "surah": 1,
+      "ranges": 7,
+      "sha256": "d9f0db2370480c8729844ccbc4e34213707896dda8f3cf7fbd562fec77baeeea",
+      "bytes": 181991
+    },
+    {
+      "file": "002.json",
+      "surah": 2,
+      "ranges": 178,
+      "sha256": "3507f05ddffa60892ac189deca45330a65549e4ce18866f77c09c60834a72dd7",
+      "bytes": 3506153
+    },
+    {
+      "file": "003.json",
+      "surah": 3,
+      "ranges": 64,
+      "sha256": "bc82ed175554c9c31a39f43176080293fcc630b38902dfd543a387e186ebeb17",
+      "bytes": 1169106
+    },
+    {
+      "file": "004.json",
+      "surah": 4,
+      "ranges": 72,
+      "sha256": "3e44d640208a1a1e92f2d781faa8c5636a8756e9080f3c2600e291b07dba04f1",
+      "bytes": 1727625
+    },
+    {
+      "file": "005.json",
+      "surah": 5,
+      "ranges": 45,
+      "sha256": "9cc9d1a54a5557affd5f7249ab4f8cf5b2fb0fcc149abfe6e8801ab6a5f53dec",
+      "bytes": 1397502
+    },
+    {
+      "file": "006.json",
+      "surah": 6,
+      "ranges": 71,
+      "sha256": "f53b4c6b0105737d4623732325cb06a499e391849fb1de897e699190c54d1b23",
+      "bytes": 856373
+    },
+    {
+      "file": "007.json",
+      "surah": 7,
+      "ranges": 101,
+      "sha256": "4fa36e3f805706b3f052068489c70a5a8ab71dedc3f3e7ebdee34f688e812f26",
+      "bytes": 883685
+    },
+    {
+      "file": "008.json",
+      "surah": 8,
+      "ranges": 37,
+      "sha256": "bf6f0bca0bfa7e1e0d46d39b65b61e98899f0a0c4a96af1e71114743ea102405",
+      "bytes": 541917
+    },
+    {
+      "file": "009.json",
+      "surah": 9,
+      "ranges": 79,
+      "sha256": "a608ee12b738486368e2486c6d0a40dfa0917fbfcb5960f68494af0d5775de19",
+      "bytes": 806234
+    },
+    {
+      "file": "010.json",
+      "surah": 10,
+      "ranges": 49,
+      "sha256": "3f0d98460464e68602042aa94d4506dbc24ebc3368a6db453be4f9f81357103d",
+      "bytes": 298696
+    },
+    {
+      "file": "011.json",
+      "surah": 11,
+      "ranges": 55,
+      "sha256": "0651fae6faed83d99e57f10977a1adcc13d8ef81df256820ed57c943d7ecc47f",
+      "bytes": 326030
+    },
+    {
+      "file": "012.json",
+      "surah": 12,
+      "ranges": 48,
+      "sha256": "3a6ff80b86e50d51544a7c6defa5d14d2bcef90f4ceb2567b76a921a5aabf6ae",
+      "bytes": 324136
+    },
+    {
+      "file": "013.json",
+      "surah": 13,
+      "ranges": 29,
+      "sha256": "ac4bbf88f0df557697c49fad10604f225741d1bb5368ef1b3bfaacd5460c3fa4",
+      "bytes": 255425
+    },
+    {
+      "file": "014.json",
+      "surah": 14,
+      "ranges": 24,
+      "sha256": "c4bac96808dfd483e210ade1a089613f6e8894cff708eb490432aa16ea7b7134",
+      "bytes": 261680
+    },
+    {
+      "file": "015.json",
+      "surah": 15,
+      "ranges": 24,
+      "sha256": "ddcda6758ec780bd87b8623332cc4d98aa620d4d6ea5d5562816e45c3d150642",
+      "bytes": 162510
+    },
+    {
+      "file": "016.json",
+      "surah": 16,
+      "ranges": 55,
+      "sha256": "fd5377f4917936c6c6d5cb1f3e4bd3b4d051f8b6db4f01af25b49e9484fa9e39",
+      "bytes": 332494
+    },
+    {
+      "file": "017.json",
+      "surah": 17,
+      "ranges": 63,
+      "sha256": "ba3e23d7cabe65e5e0ede8710eed1c49274742541ef5286f04115a59c7ce8cd3",
+      "bytes": 512353
+    },
+    {
+      "file": "018.json",
+      "surah": 18,
+      "ranges": 43,
+      "sha256": "048ca854ea6daea2cff9d98eb5d85cbce32040a656f263c97f93a049cd30747b",
+      "bytes": 433898
+    },
+    {
+      "file": "019.json",
+      "surah": 19,
+      "ranges": 31,
+      "sha256": "d14aa4b18f0655440ec87db2e5331d6b63c4853ebacf4916d26a20002c24169b",
+      "bytes": 337836
+    },
+    {
+      "file": "020.json",
+      "surah": 20,
+      "ranges": 32,
+      "sha256": "00420c0ac112c798f9a0686c5b9b7636d988249c45f3f7970ef29e130c2a6fe8",
+      "bytes": 328438
+    },
+    {
+      "file": "021.json",
+      "surah": 21,
+      "ranges": 32,
+      "sha256": "e34522598ace59893a7b28626a2909b5b60ad3fe6a5e524a86e1d1ff9879058c",
+      "bytes": 324271
+    },
+    {
+      "file": "022.json",
+      "surah": 22,
+      "ranges": 36,
+      "sha256": "7accc35cc0fc9ae03ee54a0ffb2b6a33e4529a9cf1e80eaba124ba0bd77e321d",
+      "bytes": 371780
+    },
+    {
+      "file": "023.json",
+      "surah": 23,
+      "ranges": 24,
+      "sha256": "17ef60a6ab80848d81b366ecd7e217cd7e10dcb02b09611b9a2e23bc2bc9bd1b",
+      "bytes": 236284
+    },
+    {
+      "file": "024.json",
+      "surah": 24,
+      "ranges": 33,
+      "sha256": "1cd7c1054f065faf15207d57079a7e1414629535bb3e201a1eb7c6160110ab96",
+      "bytes": 520553
+    },
+    {
+      "file": "025.json",
+      "surah": 25,
+      "ranges": 22,
+      "sha256": "43fa2a2b318db493bdf9417e9c14777ba59e7cf37eae3bdfa76c78d5f9bf2f99",
+      "bytes": 244530
+    },
+    {
+      "file": "026.json",
+      "surah": 26,
+      "ranges": 31,
+      "sha256": "b0f2bdf2d3301199867d6937f2f104dd28876e7d7205b25284a6055b1f0e3e70",
+      "bytes": 246385
+    },
+    {
+      "file": "027.json",
+      "surah": 27,
+      "ranges": 26,
+      "sha256": "1337e3bdcf3651411aba5e45e7b06f594ff3f7056c0289c0a60a4dd56159691d",
+      "bytes": 233517
+    },
+    {
+      "file": "028.json",
+      "surah": 28,
+      "ranges": 29,
+      "sha256": "b064901179112c4903908d2fd78d104ef08cbfb9a434ee18a0ba572489cb09af",
+      "bytes": 239348
+    },
+    {
+      "file": "029.json",
+      "surah": 29,
+      "ranges": 24,
+      "sha256": "1329f681dbc99d02bca105a991ef1a1fd712e96ccd5b8951fdd71ad133b652a0",
+      "bytes": 194153
+    },
+    {
+      "file": "030.json",
+      "surah": 30,
+      "ranges": 20,
+      "sha256": "9cc013ad2a485d8dc061e224f450f212c357b2b1b8af2f3d257c7bc233341f17",
+      "bytes": 193312
+    },
+    {
+      "file": "031.json",
+      "surah": 31,
+      "ranges": 15,
+      "sha256": "90eeea9e77e14471de5f3fba287848a98f111fe22fbdd53be4a766cd8ac6fb3c",
+      "bytes": 158659
+    },
+    {
+      "file": "032.json",
+      "surah": 32,
+      "ranges": 10,
+      "sha256": "0733ec507c97e62e30d7631ee361e05cb2feb223f71bcb42b27ce0f4a63082d3",
+      "bytes": 94128
+    },
+    {
+      "file": "033.json",
+      "surah": 33,
+      "ranges": 36,
+      "sha256": "aa302f49c4110318303d7913c965dfcd89a59da1253e34f889c05f91dc7e0ee9",
+      "bytes": 703555
+    },
+    {
+      "file": "034.json",
+      "surah": 34,
+      "ranges": 19,
+      "sha256": "131a6b08a6b4a8afe2ef4cdbb713da8a094b021255038b98156b728859ea9d12",
+      "bytes": 215931
+    },
+    {
+      "file": "035.json",
+      "surah": 35,
+      "ranges": 20,
+      "sha256": "807ef44d2a0555db1f75d23bbb7f6e1cb5fbbd4c434c38b6a6f9e8ffdc20ce71",
+      "bytes": 177477
+    },
+    {
+      "file": "036.json",
+      "surah": 36,
+      "ranges": 21,
+      "sha256": "de5b2490350d87604b54ef531c41c9c2d7f6587bc9c12bbee88710e7c4fdb16f",
+      "bytes": 198362
+    },
+    {
+      "file": "037.json",
+      "surah": 37,
+      "ranges": 21,
+      "sha256": "b69401d984a94eff31059fa608cd86c1118e7dabef924221e9233258fa325037",
+      "bytes": 252456
+    },
+    {
+      "file": "038.json",
+      "surah": 38,
+      "ranges": 16,
+      "sha256": "401048ed960c51a7e8ed6af4d4e9a28e03e01929e13618aa30754fdf0df7732e",
+      "bytes": 183236
+    },
+    {
+      "file": "039.json",
+      "surah": 39,
+      "ranges": 26,
+      "sha256": "0f6e557899b6f96042f3b822ab3598d6f2fa7606cd8fab0c1d57ff9b67e198d1",
+      "bytes": 241703
+    },
+    {
+      "file": "040.json",
+      "surah": 40,
+      "ranges": 23,
+      "sha256": "e90fe1012878c7481b92f2ce3b5ddc9c7db3acf7def6d94d10009fa08a7b8a15",
+      "bytes": 194170
+    },
+    {
+      "file": "041.json",
+      "surah": 41,
+      "ranges": 14,
+      "sha256": "6c8af2cdb3c69e4d098cba89ae52da71e6aca62ed060c4ef3138c4148f0d75e3",
+      "bytes": 156182
+    },
+    {
+      "file": "042.json",
+      "surah": 42,
+      "ranges": 17,
+      "sha256": "47e0b2f7ab1be79d2f5de8d42553e2c43866d086549002ac3cbe82fa31399b16",
+      "bytes": 162964
+    },
+    {
+      "file": "043.json",
+      "surah": 43,
+      "ranges": 12,
+      "sha256": "e40f0f7ecf0979909e6206be6da764a92d363ee8cf3fe298ee02bc694fb60f93",
+      "bytes": 143808
+    },
+    {
+      "file": "044.json",
+      "surah": 44,
+      "ranges": 7,
+      "sha256": "c0b2e881bb9185a947bcdfa4f3b5120aa12d232842bd728c4781f1631deeaba6",
+      "bytes": 109442
+    },
+    {
+      "file": "045.json",
+      "surah": 45,
+      "ranges": 8,
+      "sha256": "650456db4437b472fee5d2d96dfb9ae1afbbd93142ffc557231cb64fc2624727",
+      "bytes": 50592
+    },
+    {
+      "file": "046.json",
+      "surah": 46,
+      "ranges": 9,
+      "sha256": "ad0d4d3cf9d74d07e107ef0eaa5ab7960ece7dc02e9b6ef59e8ca81dd913141e",
+      "bytes": 191686
+    },
+    {
+      "file": "047.json",
+      "surah": 47,
+      "ranges": 10,
+      "sha256": "f90f4a63dd81c3a51b79fb05ae2c877cd5440426d1575a4151f933af0d8c7329",
+      "bytes": 99659
+    },
+    {
+      "file": "048.json",
+      "surah": 48,
+      "ranges": 11,
+      "sha256": "014897465c76c1f9b4f1c78990c99fa737de474bb27168eed8127090e6f4237f",
+      "bytes": 230145
+    },
+    {
+      "file": "049.json",
+      "surah": 49,
+      "ranges": 8,
+      "sha256": "7143e24fb31a4c3f804ad8f3a21f7f4304be18ec957998f0df0ffb2fe26019ce",
+      "bytes": 159752
+    },
+    {
+      "file": "050.json",
+      "surah": 50,
+      "ranges": 8,
+      "sha256": "3d77a882c0e8c267df1e6d3382c689b9e6ed19108ddfd68cde6cd9313d5a33bf",
+      "bytes": 114630
+    },
+    {
+      "file": "051.json",
+      "surah": 51,
+      "ranges": 7,
+      "sha256": "c9f364ed083785c0d659afa6352d99c195893de2ef9a1d400babb5749ce664f3",
+      "bytes": 69544
+    },
+    {
+      "file": "052.json",
+      "surah": 52,
+      "ranges": 6,
+      "sha256": "bcabfd8a39f9e9c8c9b37e879c6394936ece611e5bfcebf8fe6bf53facb1b2b0",
+      "bytes": 78700
+    },
+    {
+      "file": "053.json",
+      "surah": 53,
+      "ranges": 8,
+      "sha256": "0bdf50ac1539ebc3c76b1404acb13fab604f8b6fcb6c53c58fbe6f810d4c7fe4",
+      "bytes": 152167
+    },
+    {
+      "file": "054.json",
+      "surah": 54,
+      "ranges": 8,
+      "sha256": "131cdebb768a21e8ca0cadac0cc965c4c951e3bc27f61c2d62117828be2222ac",
+      "bytes": 89529
+    },
+    {
+      "file": "055.json",
+      "surah": 55,
+      "ranges": 8,
+      "sha256": "71c24470ae2cd160e3ed34c8968b524e0bd557ff10bb8da36ffda75f94b07967",
+      "bytes": 124562
+    },
+    {
+      "file": "056.json",
+      "surah": 56,
+      "ranges": 9,
+      "sha256": "2b12121ae869abe7097ddd3f42d9e7360eb2f54cd1b2ad0b3d251f1d14b689ec",
+      "bytes": 227605
+    },
+    {
+      "file": "057.json",
+      "surah": 57,
+      "ranges": 11,
+      "sha256": "89228435d88db301d4f9a97144899d953bc537d9bf78a8d90d39960d82d3bc8b",
+      "bytes": 168583
+    },
+    {
+      "file": "058.json",
+      "surah": 58,
+      "ranges": 8,
+      "sha256": "6427dab62303130580d1206ecc9d953f231660aaecb428bb784a622403d81408",
+      "bytes": 124632
+    },
+    {
+      "file": "059.json",
+      "surah": 59,
+      "ranges": 6,
+      "sha256": "a9500d1acfe6a570808f6a87657c36df507f44c04708c7395499dfff57804411",
+      "bytes": 146709
+    },
+    {
+      "file": "060.json",
+      "surah": 60,
+      "ranges": 6,
+      "sha256": "d4414ba0fbd530a9adeb7b00a3430177bb4df206ee6fb2b14764eec44f5ab919",
+      "bytes": 126744
+    },
+    {
+      "file": "061.json",
+      "surah": 61,
+      "ranges": 5,
+      "sha256": "829ef7376d0d2a3ea45c8fcf6342fa3a9ea6a59a5ad717dba8a3cb518ec0d114",
+      "bytes": 63133
+    },
+    {
+      "file": "062.json",
+      "surah": 62,
+      "ranges": 4,
+      "sha256": "a2e63fca533ec0ab99eb2b4b671613136de3d29378fc8c5a1981de467a856fcf",
+      "bytes": 54969
+    },
+    {
+      "file": "063.json",
+      "surah": 63,
+      "ranges": 3,
+      "sha256": "7571f66ee56f7dfab98ae2f8d2a8f30556fa8d258276f44c9b3ac5a1c223fdc6",
+      "bytes": 56337
+    },
+    {
+      "file": "064.json",
+      "surah": 64,
+      "ranges": 5,
+      "sha256": "f18bd75ae5faa1326b97bbd76952d37d0e38e1a5263fe2e7727c3e29d87d4b2a",
+      "bytes": 33783
+    },
+    {
+      "file": "065.json",
+      "surah": 65,
+      "ranges": 6,
+      "sha256": "372a9d4205e5b728e450f64d3dad7be75f775c410528bf254bb1619aacb63784",
+      "bytes": 89888
+    },
+    {
+      "file": "066.json",
+      "surah": 66,
+      "ranges": 4,
+      "sha256": "0e3ba041e4f2526ce1e4ab844cea1b465c682d1f6bd8fd2829291e49d75821ce",
+      "bytes": 100799
+    },
+    {
+      "file": "067.json",
+      "surah": 67,
+      "ranges": 6,
+      "sha256": "a487db22102c31c706686b1655d013ba6e3cbb2b302ffca4c63d9fe136097e9e",
+      "bytes": 44024
+    },
+    {
+      "file": "068.json",
+      "surah": 68,
+      "ranges": 6,
+      "sha256": "14ac202fb21abab192db4fabde92e2e8ac73c46bc4bcec595840da6b5680697d",
+      "bytes": 133358
+    },
+    {
+      "file": "069.json",
+      "surah": 69,
+      "ranges": 6,
+      "sha256": "64966eeeb1001908ba9d444bbec4eb4e508f9fa68adc265f9c943c18f44e5d72",
+      "bytes": 59445
+    },
+    {
+      "file": "070.json",
+      "surah": 70,
+      "ranges": 4,
+      "sha256": "a645f8de5f264a5366c50181b1cbe9ba5e62cb335dfb8241c190fe60deb9cd1c",
+      "bytes": 58298
+    },
+    {
+      "file": "071.json",
+      "surah": 71,
+      "ranges": 4,
+      "sha256": "7e63452a604610017676dd71d0cac08d1288a159044401e86300b3d9bf573683",
+      "bytes": 38799
+    },
+    {
+      "file": "072.json",
+      "surah": 72,
+      "ranges": 5,
+      "sha256": "7190b987321395ce545e611b9be8fa0512808e9923401323dc90718627674786",
+      "bytes": 56573
+    },
+    {
+      "file": "073.json",
+      "surah": 73,
+      "ranges": 3,
+      "sha256": "09de9854bd253167b2c21c5be8a6b72ebe19ea3f0e9843fa378deaec66950552",
+      "bytes": 63480
+    },
+    {
+      "file": "074.json",
+      "surah": 74,
+      "ranges": 4,
+      "sha256": "ddb41eae2b03a718765b9b3232f5b892e842cac4b200c58609d11e1868315b0d",
+      "bytes": 77053
+    },
+    {
+      "file": "075.json",
+      "surah": 75,
+      "ranges": 3,
+      "sha256": "292070e0292bde8e42aed904cbb76cd15cb1fe33d1106d30c1327c69116f602a",
+      "bytes": 58203
+    },
+    {
+      "file": "076.json",
+      "surah": 76,
+      "ranges": 4,
+      "sha256": "415ee0b6dd51ec93e672d2be6836f96fb2653e102d922d703d6572714ab6eeb2",
+      "bytes": 53783
+    },
+    {
+      "file": "077.json",
+      "surah": 77,
+      "ranges": 4,
+      "sha256": "a7865228e40623163f45ca25116eddc2b259b2a31016b0c889c8db7b040e45cd",
+      "bytes": 29305
+    },
+    {
+      "file": "078.json",
+      "surah": 78,
+      "ranges": 4,
+      "sha256": "199f66e75cc136917174dc9a77ad0fd42edf67b0be13cf4eeba151ddad6c544b",
+      "bytes": 47084
+    },
+    {
+      "file": "079.json",
+      "surah": 79,
+      "ranges": 4,
+      "sha256": "adfd7b835526a4be0b8c46f17126f1bb6a9ad796be5c0d772caaa42b9c9c4916",
+      "bytes": 34087
+    },
+    {
+      "file": "080.json",
+      "surah": 80,
+      "ranges": 3,
+      "sha256": "3644b916a8e9e06129518cc4c00988e94f1c65bb8c34a48d251a3e11adfd6f63",
+      "bytes": 49071
+    },
+    {
+      "file": "081.json",
+      "surah": 81,
+      "ranges": 2,
+      "sha256": "55c088d09aadf45771eaf2ea740ee4d27a984af9817f5d09b4546c135b43e086",
+      "bytes": 67283
+    },
+    {
+      "file": "082.json",
+      "surah": 82,
+      "ranges": 2,
+      "sha256": "53072098044a287901d4c4c77a156571f21cec3b4b72499f4bbf0c1680306bf1",
+      "bytes": 24737
+    },
+    {
+      "file": "083.json",
+      "surah": 83,
+      "ranges": 4,
+      "sha256": "6bd9856c6dea0455c360c59fb80ea4c4f1aa618feac07a3db6f4c61d5a70ad65",
+      "bytes": 45367
+    },
+    {
+      "file": "084.json",
+      "surah": 84,
+      "ranges": 2,
+      "sha256": "8a12ab0a8a1edcbda0490865f3a45ae1a682d4848b5ebce89810777f91b53f9c",
+      "bytes": 38788
+    },
+    {
+      "file": "085.json",
+      "surah": 85,
+      "ranges": 2,
+      "sha256": "d9a62b69d570daa3c13d8a32a8ea849c16567302f0ecfc5ac4c106230380b7c7",
+      "bytes": 67138
+    },
+    {
+      "file": "086.json",
+      "surah": 86,
+      "ranges": 2,
+      "sha256": "9689e0b68234d7fe350a373b2848acfd62781fd51288103cb06cbc65cbed5e93",
+      "bytes": 14464
+    },
+    {
+      "file": "087.json",
+      "surah": 87,
+      "ranges": 2,
+      "sha256": "1c84ea34b6eac14f9ca51d13e796c452d201f1cbabd7f153deb367dc4c2d5803",
+      "bytes": 36102
+    },
+    {
+      "file": "088.json",
+      "surah": 88,
+      "ranges": 3,
+      "sha256": "a95fd5195e4c1138ef167613b120ae5bd9c9de38f43ca01a11caa812c2993395",
+      "bytes": 28414
+    },
+    {
+      "file": "089.json",
+      "surah": 89,
+      "ranges": 3,
+      "sha256": "aadeb7a2097bbf61b035fadeff84ea9b0bf852c9f1cfe54ba83b54021faa3e53",
+      "bytes": 69518
+    },
+    {
+      "file": "090.json",
+      "surah": 90,
+      "ranges": 2,
+      "sha256": "dbd07e2251c80e47a558794cf1b6e36cc33bb9121622192e2c3203e33c900fa2",
+      "bytes": 41198
+    },
+    {
+      "file": "091.json",
+      "surah": 91,
+      "ranges": 2,
+      "sha256": "58ad63285fcd230979fd9e1454dd0c8fd9a869e13ec6676a1037b8df5453bbfa",
+      "bytes": 26153
+    },
+    {
+      "file": "092.json",
+      "surah": 92,
+      "ranges": 2,
+      "sha256": "da207c6e5453b45f5bac419530da528d4a6869fd5460d7ef6f7c8119ed3dea20",
+      "bytes": 40523
+    },
+    {
+      "file": "093.json",
+      "surah": 93,
+      "ranges": 1,
+      "sha256": "cafb9d2f7aaaf0680c3ac598507c25242eac2bd2f9c11518d48fcdc5e5fd1b72",
+      "bytes": 32415
+    },
+    {
+      "file": "094.json",
+      "surah": 94,
+      "ranges": 1,
+      "sha256": "2cc5d16d9bb9c73ad526d3ce13c7ac17879152b61693f2bfb70682c7a9012e50",
+      "bytes": 24757
+    },
+    {
+      "file": "095.json",
+      "surah": 95,
+      "ranges": 1,
+      "sha256": "18bdc2f3a99201ea332dfe934bb7b71dbe5fdba53663df13f9e57e4fd17f12df",
+      "bytes": 9645
+    },
+    {
+      "file": "096.json",
+      "surah": 96,
+      "ranges": 2,
+      "sha256": "2a878cf025a4c971a123ed47810f269931b816f28047c8b4d303d34a7e26f3ea",
+      "bytes": 23091
+    },
+    {
+      "file": "097.json",
+      "surah": 97,
+      "ranges": 1,
+      "sha256": "56f47eea62b289455e2de13f225fd81c2661d3b9f79e85254130d64bd88707fd",
+      "bytes": 75243
+    },
+    {
+      "file": "098.json",
+      "surah": 98,
+      "ranges": 2,
+      "sha256": "c8e320fbdc95ee7086a1d85517b512d08ab0df106640f5984212e512585daecc",
+      "bytes": 25207
+    },
+    {
+      "file": "099.json",
+      "surah": 99,
+      "ranges": 1,
+      "sha256": "59a5a3fac5050df9eb7f54f40e845dca01449ec8ff1ab0971cada1ae60ef2815",
+      "bytes": 32933
+    },
+    {
+      "file": "100.json",
+      "surah": 100,
+      "ranges": 1,
+      "sha256": "8c25ce390981b325407f148f60a46834c3912f9b4cda9c7f84c3bfdc9323c7d4",
+      "bytes": 15027
+    },
+    {
+      "file": "101.json",
+      "surah": 101,
+      "ranges": 1,
+      "sha256": "b0c6ab5b99a7375f3e9c314e90be30b64a223ec30a25527446df938ad524dca7",
+      "bytes": 16817
+    },
+    {
+      "file": "102.json",
+      "surah": 102,
+      "ranges": 1,
+      "sha256": "cd545505e5429a7370337562af7e08d08bfed61b4e75c1fbbf72ab8399bb0beb",
+      "bytes": 37012
+    },
+    {
+      "file": "103.json",
+      "surah": 103,
+      "ranges": 1,
+      "sha256": "c12e2136812d6df60c8431d0bbf4099a82e5b170eb58d6de5cfdd636955eb854",
+      "bytes": 6857
+    },
+    {
+      "file": "104.json",
+      "surah": 104,
+      "ranges": 1,
+      "sha256": "f8ef4af1af1286b5c8dee521d9b08668db95bd25440ac81eebc7929a245cdfce",
+      "bytes": 6774
+    },
+    {
+      "file": "105.json",
+      "surah": 105,
+      "ranges": 1,
+      "sha256": "a1515ec142c922dd465b12d674fce68aafe34e1e505fcf948e61956957c81482",
+      "bytes": 45804
+    },
+    {
+      "file": "106.json",
+      "surah": 106,
+      "ranges": 1,
+      "sha256": "1e2f86c1089e4a032a9eca7596a428e51c0a32f3850375278e91bd67eb0b7ff0",
+      "bytes": 10824
+    },
+    {
+      "file": "107.json",
+      "surah": 107,
+      "ranges": 1,
+      "sha256": "bd6f4c41dd98a16c54973a8aeb312754a90404bec439912e5d35164e583b029b",
+      "bytes": 26433
+    },
+    {
+      "file": "108.json",
+      "surah": 108,
+      "ranges": 1,
+      "sha256": "be1fc6970477843eac4e93680cad5da27285c21cba7f9277b47d89bf1a5fc74e",
+      "bytes": 39026
+    },
+    {
+      "file": "109.json",
+      "surah": 109,
+      "ranges": 1,
+      "sha256": "9678aa7ef2481577de0348d636dd84efb399a8f7911df802248ca0a5908fdf32",
+      "bytes": 17123
+    },
+    {
+      "file": "110.json",
+      "surah": 110,
+      "ranges": 1,
+      "sha256": "f9034900867b17411f217b89ce90725ae5c8a4b96f656d02c930973a549a9985",
+      "bytes": 27136
+    },
+    {
+      "file": "111.json",
+      "surah": 111,
+      "ranges": 1,
+      "sha256": "d25311246d9911900fa3e3918bb57609d8e3f4147b443477cbae9b5e59edd24f",
+      "bytes": 19608
+    },
+    {
+      "file": "112.json",
+      "surah": 112,
+      "ranges": 1,
+      "sha256": "7fbf3dcfe073b758c367bf44e1766ed36671d8827aa1a9ac1035c9afee4da10a",
+      "bytes": 67418
+    },
+    {
+      "file": "113.json",
+      "surah": 113,
+      "ranges": 1,
+      "sha256": "0bdc27317a76e33a7312b5e99baab81fce180bea6abd4ff845e6e239e479c955",
+      "bytes": 48376
+    },
+    {
+      "file": "114.json",
+      "surah": 114,
+      "ranges": 1,
+      "sha256": "d51c3a94a1124c1402c07e9f42b2bd4c49f77ff9e335b248cd12ee377913249c",
+      "bytes": 21808
+    }
+  ],
+  "range_entries": 1911,
+  "ayahs_covered": 6236,
+  "multi_ayah_ranges": 1421,
+  "sha256_algorithm": "SHA-256"
+}

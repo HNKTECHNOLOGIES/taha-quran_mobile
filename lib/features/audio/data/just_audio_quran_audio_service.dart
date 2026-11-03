@@ -7,7 +7,7 @@ import '../domain/entities/reciter.dart';
 import '../domain/services/quran_audio_service.dart';
 import 'quran_audio_url_builder.dart';
 
-/// Implémentation [QuranAudioService] basée sur `just_audio` (playlist par verset).
+/// Implémentation [QuranAudioService] basée sur `just_audio`.
 class JustAudioQuranAudioService implements QuranAudioService {
   JustAudioQuranAudioService({
     AudioPlayer? player,
@@ -28,6 +28,7 @@ class JustAudioQuranAudioService implements QuranAudioService {
   bool _disposed = false;
   bool _sessionReady = false;
   int _verseCount = 0;
+  bool _verseSync = true;
 
   @override
   Stream<Duration> get positionStream => _player.positionStream;
@@ -93,6 +94,7 @@ class JustAudioQuranAudioService implements QuranAudioService {
     }
     final start = startAyah.clamp(1, verseCount);
     _verseCount = verseCount;
+    _verseSync = reciter.supportsVerseSync;
 
     _eventController.add(
       const QuranAudioPlayerEvent(QuranAudioPlayerEventKind.loading),
@@ -108,9 +110,12 @@ class JustAudioQuranAudioService implements QuranAudioService {
       final sources = [
         for (final uri in uris) AudioSource.uri(uri),
       ];
+      // Sourate complète = 1 piste : pas de seek verset sans minutage.
+      final initialIndex =
+          _verseSync ? (start - 1).clamp(0, sources.length - 1) : 0;
       await _player.setAudioSources(
         sources,
-        initialIndex: start - 1,
+        initialIndex: initialIndex,
         preload: true,
       );
       _eventController.add(
@@ -152,7 +157,7 @@ class JustAudioQuranAudioService implements QuranAudioService {
   @override
   Future<void> seekToVerse(int ayahNumber) async {
     _ensureNotDisposed();
-    if (_verseCount < 1) return;
+    if (!_verseSync || _verseCount < 1) return;
     final index = (ayahNumber.clamp(1, _verseCount)) - 1;
     await _player.seek(Duration.zero, index: index);
   }
@@ -160,12 +165,14 @@ class JustAudioQuranAudioService implements QuranAudioService {
   @override
   Future<void> next() async {
     _ensureNotDisposed();
+    if (!_verseSync) return;
     await _player.seekToNext();
   }
 
   @override
   Future<void> previous() async {
     _ensureNotDisposed();
+    if (!_verseSync) return;
     await _player.seekToPrevious();
   }
 

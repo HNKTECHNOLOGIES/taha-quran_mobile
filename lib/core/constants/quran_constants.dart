@@ -21,4 +21,8 @@ class QuranConstants {
       'assets/quran/translations_fr.json';
   static const String manifestAssetPath = 'assets/quran/MANIFEST.json';
   static const String sha256AssetPath = 'assets/quran/quran_ar.sha256';
+
+  static const String ibnKathirAssetDir = 'assets/quran/tafsir/ibn_kathir_ar';
+  static const String ibnKathirManifestAssetPath =
+      'assets/quran/tafsir/ibn_kathir_ar/MANIFEST.json';
 }

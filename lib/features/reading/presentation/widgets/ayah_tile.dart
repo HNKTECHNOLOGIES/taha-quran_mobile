@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../../../../app/l10n/app_strings.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/arabic_numerals.dart';
 import '../../../surahs/domain/entities/ayah.dart';
+import '../../../tafsir/presentation/widgets/ibn_kathir_expandable.dart';
 
-/// Verset : médaillon + arabe RTL + traduction FR + actions bibliothèque.
+/// Verset : médaillon + arabe RTL + traduction FR + tafsir + actions.
 class AyahTile extends StatelessWidget {
   const AyahTile({
     super.key,
@@ -12,6 +14,9 @@ class AyahTile extends StatelessWidget {
     this.showTranslation = true,
     this.arabicFontSize = 30,
     this.translationFontSize = 16,
+    this.tafsirFontSize = 17,
+    this.showTafsir = true,
+    this.strings,
     this.isFavorite = false,
     this.isHighlighted = false,
     this.onToggleFavorite,
@@ -28,6 +33,9 @@ class AyahTile extends StatelessWidget {
   final bool showTranslation;
   final double arabicFontSize;
   final double translationFontSize;
+  final double tafsirFontSize;
+  final bool showTafsir;
+  final AppStrings? strings;
   final bool isFavorite;
   final bool isHighlighted;
   final VoidCallback? onToggleFavorite;
@@ -146,6 +154,13 @@ class AyahTile extends StatelessWidget {
               ),
             ],
           ),
+          if (showTafsir && strings != null)
+            IbnKathirExpandable(
+              surahId: ayah.surahId,
+              ayahNumber: ayah.number,
+              strings: strings!,
+              fontSize: tafsirFontSize,
+            ),
         ],
       ),
     );

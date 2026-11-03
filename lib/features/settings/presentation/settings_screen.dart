@@ -6,6 +6,7 @@ import '../../../app/providers/reading_settings_provider.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../audio/data/reciter_catalog.dart';
 import '../../audio/presentation/providers/audio_providers.dart';
+import '../../tafsir/presentation/providers/tafsir_providers.dart';
 import '../../translations/presentation/providers/translation_providers.dart';
 
 class SettingsScreen extends ConsumerWidget {
@@ -17,6 +18,7 @@ class SettingsScreen extends ConsumerWidget {
     final settings = ref.watch(readingSettingsProvider);
     final info = ref.watch(frenchTranslationInfoProvider).asData?.value;
     final reciter = ref.watch(selectedReciterProvider);
+    final tafsirInfo = ref.watch(ibnKathirInfoProvider).asData?.value;
 
     return Scaffold(
       backgroundColor: AppColors.mushafCream,
@@ -60,8 +62,8 @@ class SettingsScreen extends ConsumerWidget {
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: Text(
-                '${ReciterCatalog.attribution}\n'
-                'Fichiers par verset (everyayah.com). '
+                '${reciter.sourceAttribution}\n'
+                '${reciter.supportsVerseSync ? 'Fichiers par verset (everyayah.com). ' : 'Fichier par sourate (mp3quran.net) — pas de sync. verset sans minutage. '}'
                 'Streamés, non redistribués dans l’application.',
                 style: TextStyle(
                   fontFamily: 'SourceSerif4',
@@ -152,6 +154,81 @@ class SettingsScreen extends ConsumerWidget {
                             fontFamily: 'SourceSerif4',
                             fontSize: 13,
                             height: 1.4,
+                            color: AppColors.inkMuted,
+                          ),
+                        ),
+                      ],
+                    ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          _SectionTitle(s.tafsirSection),
+          ListTile(
+            title: Text(s.tafsirFontSize),
+            subtitle: Slider(
+              value: settings.tafsirFontSize,
+              min: 14,
+              max: 32,
+              divisions: 18,
+              activeColor: AppColors.emerald,
+              label: settings.tafsirFontSize.round().toString(),
+              onChanged: (v) => ref
+                  .read(readingSettingsProvider.notifier)
+                  .setTafsirFontSize(v),
+            ),
+            trailing: Text(
+              '${settings.tafsirFontSize.round()}',
+              style: const TextStyle(
+                fontFamily: 'SourceSerif4',
+                fontWeight: FontWeight.w600,
+                color: AppColors.emeraldDark,
+              ),
+            ),
+          ),
+          _SectionTitle(s.aboutTafsir),
+          Card(
+            color: Colors.white,
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(14),
+              side: BorderSide(color: AppColors.creamDark),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: tafsirInfo == null
+                  ? Text(s.tafsirUnavailable)
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          tafsirInfo.workAr,
+                          textDirection: TextDirection.rtl,
+                          style: const TextStyle(
+                            fontFamily: 'Amiri',
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.emeraldDark,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          tafsirInfo.commentatorAr,
+                          textDirection: TextDirection.rtl,
+                          style: const TextStyle(fontFamily: 'Amiri', fontSize: 16),
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          '${s.licenseLabel}: ${tafsirInfo.license}',
+                          style: const TextStyle(fontFamily: 'SourceSerif4'),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          tafsirInfo.attribution,
+                          textDirection: TextDirection.rtl,
+                          style: TextStyle(
+                            fontFamily: 'Amiri',
+                            fontSize: 14,
+                            height: 1.45,
                             color: AppColors.inkMuted,
                           ),
                         ),

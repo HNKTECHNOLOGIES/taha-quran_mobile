@@ -55,6 +55,7 @@ flutter analyze
 | `assets/quran/TRANSLATION_FR_LICENSE.md` | CC BY 4.0 + attribution |
 | `assets/quran/MANIFEST.json` | Métadonnées source / licence |
 | `assets/quran/AUDIO_SOURCES.md` | Catalogue récitateurs / URLs everyayah |
+| `assets/quran/tafsir/ibn_kathir_ar/` | Tafsir Ibn Kathir (arabe, hors ligne, verbatim) |
 
 Les versets arabes et les traductions ne sont **jamais** générés ni modifiés par une IA.
 
