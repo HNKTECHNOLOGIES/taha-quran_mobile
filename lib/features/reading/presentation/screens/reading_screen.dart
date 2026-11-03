@@ -12,6 +12,7 @@ import '../../../../shared/widgets/loading_view.dart';
 import '../../../audio/domain/entities/audio_playback_state.dart';
 import '../../../audio/presentation/providers/audio_providers.dart';
 import '../../../audio/presentation/widgets/compact_audio_player.dart';
+import '../../../audio/presentation/widgets/surah_download_button.dart';
 import '../../../library/domain/entities/verse_ref.dart';
 import '../../../library/presentation/providers/library_providers.dart';
 import '../../../surahs/domain/entities/surah.dart';
@@ -195,6 +196,12 @@ class _ReadingViewState extends ConsumerState<_ReadingView> {
           ],
         ),
         actions: [
+          SurahDownloadButton(
+            surahId: surah.id,
+            verseCount: surah.versesCount,
+            strings: strings,
+            compact: true,
+          ),
           IconButton(
             tooltip: strings.playAudio,
             onPressed: () => audioController.togglePlayPause(

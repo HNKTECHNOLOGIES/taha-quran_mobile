@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/audio/presentation/screens/downloads_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
 import '../../features/library/presentation/screens/favorites_screen.dart';
 import '../../features/reading/presentation/screens/reading_screen.dart';
@@ -67,10 +68,22 @@ GoRouter createAppRouter() {
               GoRoute(
                 path: '/settings',
                 builder: (context, state) => const SettingsScreen(),
+                routes: [
+                  GoRoute(
+                    path: 'downloads',
+                    parentNavigatorKey: _rootKey,
+                    builder: (context, state) => const DownloadsScreen(),
+                  ),
+                ],
               ),
             ],
           ),
         ],
+      ),
+      GoRoute(
+        parentNavigatorKey: _rootKey,
+        path: '/downloads',
+        builder: (context, state) => const DownloadsScreen(),
       ),
     ],
   );

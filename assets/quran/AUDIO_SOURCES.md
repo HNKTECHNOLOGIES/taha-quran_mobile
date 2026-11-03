@@ -30,7 +30,17 @@ Vérifié HTTP 200 le 2026-11-03 pour `001.mp3`, `002.mp3`, `112.mp3`, `114.mp3`
 - Attribution dans l’app selon la source active.
 - Les fichiers de *timings* everyayah imposent un lien retour ; la sync. verse-par-verset utilise un MP3 = un verset.
 
-## Hors périmètre actuel
+## Téléchargement hors-ligne (client)
 
-- Téléchargement hors-ligne des MP3.
+- Les MP3 **ne sont pas** inclus dans le binaire ; téléchargement à la demande via `dio`.
+- Stockage local : `{Documents}/taha_audio/{reciterId}/{SSS}/…`
+  - verse-by-verse : `{SSS}{AAA}.mp3`
+  - sourate complète (Badr) : `{SSS}.mp3`
+- Reprise : fichiers déjà présents sautés ; fichier `.part` + en-tête `Range` si le serveur le permet.
+- Lecture : fichier local prioritaire, sinon streaming réseau.
+- Option « Télécharger uniquement en Wi‑Fi » (défaut : activée).
+
+## Hors périmètre
+
 - Synchronisation exacte d’un fichier « sourate complète » sans minutage.
+- Redistribution des packs audio dans le store.

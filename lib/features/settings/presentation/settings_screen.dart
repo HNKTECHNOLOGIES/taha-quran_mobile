@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../app/providers/locale_provider.dart';
 import '../../../app/providers/reading_settings_provider.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../audio/data/reciter_catalog.dart';
 import '../../audio/presentation/providers/audio_providers.dart';
+import '../../audio/presentation/providers/download_providers.dart';
 import '../../tafsir/presentation/providers/tafsir_providers.dart';
 import '../../translations/presentation/providers/translation_providers.dart';
 
@@ -51,6 +53,24 @@ class SettingsScreen extends ConsumerWidget {
                   .changeReciter(r),
             ),
           const SizedBox(height: 8),
+          _SectionTitle(s.downloadsSection),
+          SwitchListTile(
+            value: ref.watch(wifiOnlyDownloadProvider),
+            activeThumbColor: AppColors.gold,
+            activeTrackColor: AppColors.emerald.withValues(alpha: 0.45),
+            title: Text(s.wifiOnlyDownloads),
+            subtitle: Text(s.wifiOnlyDownloadsHint),
+            onChanged: (v) =>
+                ref.read(wifiOnlyDownloadProvider.notifier).setWifiOnly(v),
+          ),
+          ListTile(
+            leading: const Icon(Icons.download_for_offline_outlined,
+                color: AppColors.emerald),
+            title: Text(s.myDownloads),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => context.push('/downloads'),
+          ),
+          const SizedBox(height: 8),
           _SectionTitle(s.aboutAudio),
           Card(
             color: Colors.white,
@@ -64,7 +84,7 @@ class SettingsScreen extends ConsumerWidget {
               child: Text(
                 '${reciter.sourceAttribution}\n'
                 '${reciter.supportsVerseSync ? 'Fichiers par verset (everyayah.com). ' : 'Fichier par sourate (mp3quran.net) — pas de sync. verset sans minutage. '}'
-                'Streamés, non redistribués dans l’application.',
+                'Streamés par défaut ; téléchargeables hors-ligne à la demande (non inclus dans le binaire).',
                 style: TextStyle(
                   fontFamily: 'SourceSerif4',
                   fontSize: 13,

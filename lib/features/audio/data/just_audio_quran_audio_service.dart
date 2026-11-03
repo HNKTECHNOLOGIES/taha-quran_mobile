@@ -5,6 +5,7 @@ import 'package:just_audio/just_audio.dart';
 
 import '../domain/entities/reciter.dart';
 import '../domain/services/quran_audio_service.dart';
+import 'local_audio_source_resolver.dart';
 import 'quran_audio_url_builder.dart';
 
 /// Implémentation [QuranAudioService] basée sur `just_audio`.
@@ -12,6 +13,7 @@ class JustAudioQuranAudioService implements QuranAudioService {
   JustAudioQuranAudioService({
     AudioPlayer? player,
     this.urlBuilder = const QuranAudioUrlBuilder(),
+    this.localResolver,
     this.configureSession = true,
   }) : _player = player ?? AudioPlayer() {
     _playerStateSub = _player.playerStateStream.listen(_onPlayerState);
@@ -19,6 +21,9 @@ class JustAudioQuranAudioService implements QuranAudioService {
 
   final AudioPlayer _player;
   final QuranAudioUrlBuilder urlBuilder;
+
+  /// Si fourni, privilégie les fichiers téléchargés hors-ligne.
+  final LocalAudioSourceResolver? localResolver;
   final bool configureSession;
 
   final _eventController =
@@ -102,11 +107,17 @@ class JustAudioQuranAudioService implements QuranAudioService {
 
     try {
       await _ensureSession();
-      final uris = urlBuilder.surahPlaylist(
-        reciter: reciter,
-        surahId: surahId,
-        verseCount: verseCount,
-      );
+      final uris = localResolver != null
+          ? await localResolver!.resolvePlaylist(
+              reciter: reciter,
+              surahId: surahId,
+              verseCount: verseCount,
+            )
+          : urlBuilder.surahPlaylist(
+              reciter: reciter,
+              surahId: surahId,
+              verseCount: verseCount,
+            );
       final sources = [
         for (final uri in uris) AudioSource.uri(uri),
       ];

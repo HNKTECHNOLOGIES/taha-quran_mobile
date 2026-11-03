@@ -194,6 +194,12 @@ class HomeScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: 12),
                   _SecondaryActionButton(
+                    label: s.myDownloads,
+                    icon: Icons.download_for_offline_rounded,
+                    onPressed: () => context.push('/downloads'),
+                  ),
+                  const SizedBox(height: 12),
+                  _SecondaryActionButton(
                     label: s.myFavorites,
                     icon: Icons.favorite_rounded,
                     badge: favoritesAsync.asData?.value.length,

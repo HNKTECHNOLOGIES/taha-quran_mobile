@@ -253,6 +253,72 @@ class AppStrings {
   String get aboutTafsir =>
       language == AppLanguage.arabic ? 'حول التفسير' : 'À propos du tafsir';
 
+  String get myDownloads => language == AppLanguage.arabic
+      ? 'تنزيلاتي'
+      : 'Mes téléchargements';
+
+  String get downloadSurah => language == AppLanguage.arabic
+      ? 'تنزيل السورة'
+      : 'Télécharger la sourate';
+
+  String get downloading =>
+      language == AppLanguage.arabic ? 'جارٍ التنزيل…' : 'Téléchargement…';
+
+  String get downloadPaused =>
+      language == AppLanguage.arabic ? 'متوقف' : 'En pause';
+
+  String get downloadFailed => language == AppLanguage.arabic
+      ? 'فشل التنزيل'
+      : 'Échec du téléchargement';
+
+  String get downloadComplete => language == AppLanguage.arabic
+      ? 'تم التنزيل'
+      : 'Téléchargé';
+
+  String get cancelDownload =>
+      language == AppLanguage.arabic ? 'إلغاء' : 'Annuler';
+
+  String get resumeDownload =>
+      language == AppLanguage.arabic ? 'استئناف' : 'Reprendre';
+
+  String get deleteDownload =>
+      language == AppLanguage.arabic ? 'حذف' : 'Supprimer';
+
+  String get wifiOnlyDownloads => language == AppLanguage.arabic
+      ? 'التنزيل عبر Wi‑Fi فقط'
+      : 'Télécharger uniquement en Wi‑Fi';
+
+  String get wifiOnlyDownloadsHint => language == AppLanguage.arabic
+      ? 'منع التنزيل على بيانات الهاتف'
+      : 'Bloque le téléchargement sur les données mobiles';
+
+  String get noDownloadsYet => language == AppLanguage.arabic
+      ? 'لا توجد تلاوات محمّلة بعد'
+      : 'Aucune récitation téléchargée pour le moment';
+
+  String get downloadsSection =>
+      language == AppLanguage.arabic ? 'التنزيلات' : 'Téléchargements';
+
+  String get wifiRequiredError => language == AppLanguage.arabic
+      ? 'يلزم الاتصال بشبكة Wi‑Fi للتنزيل'
+      : 'Connexion Wi‑Fi requise pour télécharger';
+
+  String get downloadStorageError => language == AppLanguage.arabic
+      ? 'مساحة التخزين غير كافية'
+      : 'Espace de stockage insuffisant';
+
+  String get downloadNetworkError => language == AppLanguage.arabic
+      ? 'خطأ في الشبكة أثناء التنزيل'
+      : 'Erreur réseau pendant le téléchargement';
+
+  String get offlineAudioReady => language == AppLanguage.arabic
+      ? 'متاحة دون اتصال'
+      : 'Disponible hors ligne';
+
+  String get confirmDeleteDownload => language == AppLanguage.arabic
+      ? 'حذف الملفات الصوتية لهذه السورة؟'
+      : 'Supprimer les fichiers audio de cette sourate ?';
+
   String revelationLabel(String type) {
     final t = type.toLowerCase();
     if (t.contains('medin')) return medinan;

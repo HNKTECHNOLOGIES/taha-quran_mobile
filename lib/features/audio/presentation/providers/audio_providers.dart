@@ -8,11 +8,13 @@ import '../../data/reciter_catalog.dart';
 import '../../domain/entities/audio_playback_state.dart';
 import '../../domain/entities/reciter.dart';
 import '../../domain/services/quran_audio_service.dart';
+import 'download_providers.dart';
 
 const _kReciterId = 'audio_selected_reciter_id';
 
 final quranAudioServiceProvider = Provider<QuranAudioService>((ref) {
-  final service = JustAudioQuranAudioService();
+  final resolver = ref.watch(localAudioSourceResolverProvider);
+  final service = JustAudioQuranAudioService(localResolver: resolver);
   ref.onDispose(() {
     unawaited(service.dispose());
   });

@@ -24,6 +24,13 @@ void main() {
     expect(find.text('TAHA'), findsWidgets);
     expect(find.text('Lire le Coran'), findsOneWidget);
     expect(find.text('Écouter une récitation'), findsOneWidget);
+    expect(find.text('Mes téléchargements'), findsOneWidget);
+
+    await tester.scrollUntilVisible(
+      find.text('Marque-pages'),
+      200,
+      scrollable: find.byType(Scrollable).first,
+    );
     expect(find.text('Mes favoris'), findsOneWidget);
     expect(find.text('Marque-pages'), findsWidgets);
   });
